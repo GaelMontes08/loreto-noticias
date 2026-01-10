@@ -97,7 +97,7 @@ export default function Header() {
 
             {/* Center - Logo */}
             <Link href="/" className="flex justify-center">
-              <h1 className="text-2xl md:text-3xl font-archivo font-bold text-center">
+              <h1 className="text-lg md:text-3xl font-archivo font-bold text-center whitespace-nowrap">
                 Loreto Noticias
               </h1>
             </Link>
@@ -107,13 +107,13 @@ export default function Header() {
               <ThemeToggle />
               <Link
                 href="/registrarse"
-                className="px-4 py-2 text-sm font-medium hover:bg-gray-800 rounded-lg transition-colors whitespace-nowrap"
+                className="hidden md:flex px-4 py-2 text-sm font-medium hover:bg-gray-800 rounded-lg transition-colors whitespace-nowrap"
               >
                 Registrarse
               </Link>
               <Link
                 href="/iniciar-sesion"
-                className="px-4 py-2 text-sm font-medium bg-white text-black hover:bg-gray-200 rounded-lg transition-colors whitespace-nowrap"
+                className="hidden md:flex px-4 py-2 text-sm font-medium bg-white text-black hover:bg-gray-200 rounded-lg transition-colors whitespace-nowrap"
               >
                 Iniciar Sesión
               </Link>
@@ -129,7 +129,7 @@ export default function Header() {
         }`}
       >
         <div className="max-w-7xl mx-auto px-4">
-          <ul className="flex items-center justify-center gap-1 overflow-x-auto py-3 scrollbar-hide">
+          <ul className="flex items-center md:justify-center gap-1 overflow-x-auto py-3 scrollbar-hide">
             {categories.map((category) => (
               <li key={category.name}>
                 <Link
@@ -160,6 +160,26 @@ export default function Header() {
                   </Link>
                 </li>
               ))}
+              
+              {/* Mobile Auth Buttons */}
+              <li className="md:hidden pt-4 border-t border-gray-200 dark:border-gray-700">
+                <Link
+                  href="/registrarse"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors font-medium"
+                >
+                  Registrarse
+                </Link>
+              </li>
+              <li className="md:hidden">
+                <Link
+                  href="/iniciar-sesion"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors font-medium"
+                >
+                  Iniciar Sesión
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
