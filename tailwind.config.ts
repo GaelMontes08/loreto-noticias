@@ -17,6 +17,10 @@ const config: Config = {
           black: '#000000',
         },
       },
+      fontFamily: {
+        archivo: ['var(--font-archivo)', 'sans-serif'],
+        sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+      },
     },
   },
   plugins: [],

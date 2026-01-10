@@ -1,8 +1,15 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Archivo } from 'next/font/google'
 import './globals.css'
+import { ClientProviders } from './ClientProviders'
+import Header from '@/components/Header'
 
-const inter = Inter({ subsets: ['latin'] })
+const archivo = Archivo({ 
+  weight: '700',
+  subsets: ['latin'],
+  variable: '--font-archivo',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Loreto Noticias',
@@ -16,7 +23,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={inter.className}>{children}</body>
+      <body className={archivo.variable}>
+        <ClientProviders>
+          <Header />
+          {children}
+        </ClientProviders>
+      </body>
     </html>
   )
 }
