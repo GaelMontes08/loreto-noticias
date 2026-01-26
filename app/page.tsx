@@ -53,7 +53,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Main Featured News - Left Side (2 columns) */}
                   {featuredPost && (
-                    <Link href={`/noticias/${featuredPost.slug}`} className="relative h-[500px] md:col-span-2 group overflow-hidden rounded-lg">
+                    <Link href={`/noticias/${featuredPost.slug}`} className="relative h-[600px] md:col-span-2 group overflow-hidden rounded-lg hover:shadow-xl">
                       {getFeaturedImageUrl(featuredPost) && (
                         <>
                           <Image
@@ -71,7 +71,7 @@ export default function Home() {
                             <span className="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded mb-3">
                               ÚLTIMA HORA
                             </span>
-                            <h3 className="text-3xl font-archivo font-bold text-white group-hover:text-red-500 transition">
+                            <h3 className="text-3xl font-archivo font-bold text-white transition">
                               {featuredPost.title.rendered}
                             </h3>
                           </div>
@@ -86,19 +86,19 @@ export default function Home() {
                       <Link 
                         key={post.id} 
                         href={`/noticias/${post.slug}`}
-                        className="group"
+                        className="group flex-1"
                       >
-                        <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow h-full flex flex-col">
                           {/* Title on top */}
-                          <div className="p-4">
-                            <h3 className="text-xl font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition line-clamp-2">
+                          <div className="p-4 flex-shrink-0">
+                            <h3 className="text-lg font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition">
                               {post.title.rendered}
                             </h3>
                           </div>
                           
-                          {/* Image below */}
+                          {/* Image below - takes remaining space */}
                           {getFeaturedImageUrl(post) && (
-                            <div className="relative h-[200px] overflow-hidden">
+                            <div className="relative flex-1 min-h-[160px] overflow-hidden">
                               <Image
                                 src={getFeaturedImageUrl(post)}
                                 alt={getFeaturedImageAlt(post)}

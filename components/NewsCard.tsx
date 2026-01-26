@@ -43,7 +43,7 @@ export default function NewsCard({ title, excerpt, imageUrl, imageAlt, date, slu
         </Link>
       )}
       <div className="p-4">
-        <h4 className="font-bold mb-2 text-black dark:text-white hover:text-red-600 transition">
+        <h4 className="font-bold mb-2 text-black dark:text-white transition">
           <Link href={`/noticias/${slug}`}>{title}</Link>
         </h4>
         <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
