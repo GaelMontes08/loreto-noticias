@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import ThemeToggle from './ThemeToggle'
 import Link from 'next/link'
+import Image from 'next/image'
 
 const categories = [
   { name: 'Política', href: '/categoria/politica' },
@@ -39,8 +40,80 @@ export default function Header() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-black text-white shadow-lg">
         <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="grid grid-cols-3 items-center gap-4">
-            {/* Left Side - Hamburger and Search */}
+          {/* Mobile Layout */}
+          <div className="flex md:hidden items-center justify-between gap-4">
+            {/* Left - Logo and Text */}
+            <Link href="/" className="flex items-center gap-2">
+              <Image
+                src="/img/logo.webp"
+                alt="Loreto Noticias"
+                width={180}
+                height={50}
+                className="h-7 w-auto"
+                priority
+              />
+              <span className="text-lg font-archivo font-bold tracking-wide whitespace-nowrap">
+                LORETO NOTICIAS
+              </span>
+            </Link>
+
+            {/* Right - All Icons */}
+            <div className="flex items-center gap-2">
+              <button
+                className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                aria-label="Search"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+              </button>
+              
+              <ThemeToggle />
+              
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                aria-label="Menu"
+              >
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  {mobileMenuOpen ? (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  ) : (
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  )}
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Layout */}
+          <div className="hidden md:grid grid-cols-3 items-center gap-4">
+            {/* Left Side - Hamburger and Search (visible when scrolled) */}
             <div className="flex items-center gap-3">
               {isScrolled && (
                 <>
@@ -95,11 +168,19 @@ export default function Header() {
               )}
             </div>
 
-            {/* Center - Logo */}
-            <Link href="/" className="flex justify-center">
-              <h1 className="text-lg md:text-3xl font-archivo font-bold text-center whitespace-nowrap">
-                Loreto Noticias
-              </h1>
+            {/* Center - Logo and Text */}
+            <Link href="/" className="flex items-center justify-center gap-3">
+              <Image
+                src="/img/logo.webp"
+                alt="Loreto Noticias"
+                width={180}
+                height={50}
+                className="h-9 w-auto"
+                priority
+              />
+              <span className="text-xl font-archivo font-bold tracking-wide whitespace-nowrap">
+                LORETO NOTICIAS
+              </span>
             </Link>
 
             {/* Right Side - Theme, Sign Up, Sign In */}
@@ -145,7 +226,7 @@ export default function Header() {
       </nav>
 
       {/* Mobile Menu Dropdown */}
-      {mobileMenuOpen && isScrolled && (
+      {mobileMenuOpen && (
         <div className="fixed top-[72px] md:top-[76px] left-0 right-0 z-30 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-lg">
           <div className="max-w-7xl mx-auto px-4 py-4">
             <ul className="space-y-2">
