@@ -7,14 +7,20 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 export default function Home() {
-  const [posts, setPosts] = useState<WordPressPost[]>([])
+  const [featuredPosts, setFeaturedPosts] = useState<WordPressPost[]>([])
+  const [regularPosts, setRegularPosts] = useState<WordPressPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     async function loadPosts() {
       try {
-        const fetchedPosts = await getPosts(10)
-        setPosts(fetchedPosts)
+        // Fetch featured posts (category 17)
+        const fetchedFeaturedPosts = await getPosts(3, 17)
+        // Fetch regular posts
+        const fetchedRegularPosts = await getPosts(7)
+        
+        setFeaturedPosts(fetchedFeaturedPosts)
+        setRegularPosts(fetchedRegularPosts)
         setLoading(false)
       } catch (error) {
         console.error('Error loading posts:', error)
@@ -25,9 +31,12 @@ export default function Home() {
     loadPosts()
   }, [])
 
-  const featuredPost = posts[0]
-  const secondaryFeatured = posts.slice(1, 3)
-  const remainingPosts = posts.slice(3, 10)
+  const featuredPost = featuredPosts[0]
+  const secondaryFeatured = featuredPosts.slice(1, 3)
+  
+  // Filter out featured posts from regular posts to avoid duplicates
+  const featuredPostIds = featuredPosts.map(post => post.id)
+  const remainingPosts = regularPosts.filter(post => !featuredPostIds.includes(post.id))
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -38,7 +47,7 @@ export default function Home() {
             <div className="text-center py-12">
               <p className="text-gray-600 dark:text-gray-400">Cargando noticias...</p>
             </div>
-          ) : posts.length === 0 ? (
+          ) : featuredPosts.length === 0 && regularPosts.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-600 dark:text-gray-400">No hay noticias disponibles.</p>
             </div>
@@ -53,7 +62,7 @@ export default function Home() {
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Main Featured News - Left Side (2 columns) */}
                   {featuredPost && (
-                    <Link href={`/noticias/${featuredPost.slug}`} className="relative h-[600px] md:col-span-2 group overflow-hidden rounded-lg hover:shadow-xl">
+                    <Link href={`/noticias/${featuredPost.slug}`} className="relative h-[400px] md:h-[600px] md:col-span-2 group overflow-hidden rounded-lg hover:shadow-xl">
                       {getFeaturedImageUrl(featuredPost) && (
                         <>
                           <Image
@@ -71,7 +80,7 @@ export default function Home() {
                             <span className="inline-block px-3 py-1 bg-red-600 text-white text-xs font-bold rounded mb-3">
                               ÚLTIMA HORA
                             </span>
-                            <h3 className="text-3xl font-archivo font-bold text-white transition">
+                            <h3 className="text-2xl md:text-3xl font-archivo font-bold text-white transition">
                               {featuredPost.title.rendered}
                             </h3>
                           </div>
@@ -96,9 +105,9 @@ export default function Home() {
                             </h3>
                           </div>
                           
-                          {/* Image below - takes remaining space */}
+                          {/* Image below - takes remaining space with aspect ratio */}
                           {getFeaturedImageUrl(post) && (
-                            <div className="relative flex-1 min-h-[160px] overflow-hidden">
+                            <div className="relative w-full aspect-[16/9] md:flex-1 md:aspect-auto md:min-h-[160px] overflow-hidden">
                               <Image
                                 src={getFeaturedImageUrl(post)}
                                 alt={getFeaturedImageAlt(post)}

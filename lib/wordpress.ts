@@ -38,14 +38,15 @@ export interface WordPressPost {
 
 const WORDPRESS_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || ''
 
-export async function getPosts(perPage: number = 10): Promise<WordPressPost[]> {
+export async function getPosts(perPage: number = 10, categoryId?: number): Promise<WordPressPost[]> {
   try {
     if (!WORDPRESS_API_URL) {
       console.error('WordPress API URL is not configured')
       return []
     }
 
-    const url = `${WORDPRESS_API_URL}/posts?per_page=${perPage}&_embed`
+    const categoryParam = categoryId ? `&categories=${categoryId}` : ''
+    const url = `${WORDPRESS_API_URL}/posts?per_page=${perPage}&_embed${categoryParam}`
     console.log('Fetching posts from:', url)
     
     const res = await fetch(url, {
