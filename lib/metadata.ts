@@ -3,7 +3,8 @@ import { Metadata } from 'next'
 const SITE_NAME = 'Loreto Noticias'
 const SITE_DESCRIPTION = 'Tu fuente confiable de noticias de Loreto, Perú. Mantente informado con las últimas noticias locales, eventos y actualidades de la región.'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://loretonoticias.com'
-const DEFAULT_OG_IMAGE = `${SITE_URL}/fallback.webp` // You can create a default OG image
+const DEFAULT_OG_IMAGE = `${SITE_URL}/img/og-image.jpg` // You can create a default OG image
+
 
 interface SEOProps {
   title: string
@@ -77,3 +78,13 @@ export const defaultMetadata: Metadata = generateSEOMetadata({
   title: SITE_NAME,
   description: SITE_DESCRIPTION,
 })
+
+export const faviconConfig = {
+  icon: [
+    { url: '/img/icon.webp' },
+    { url: '/img/icon.webp', sizes: '32x32', type: 'image/webp' },
+    { url: '/img/icon.webp', sizes: '16x16', type: 'image/webp' },
+  ],
+  apple: '/img/icon.webp',
+  shortcut: '/img/icon.webp',
+}

@@ -3,7 +3,7 @@ import { Archivo } from 'next/font/google'
 import './globals.css'
 import { ClientProviders } from './ClientProviders'
 import Header from '@/components/Header'
-import { defaultMetadata } from '@/lib/metadata'
+import { defaultMetadata, faviconConfig } from '@/lib/metadata'
 
 const archivo = Archivo({ 
   weight: '700',
@@ -14,15 +14,7 @@ const archivo = Archivo({
 
 export const metadata: Metadata = {
   ...defaultMetadata,
-  icons: {
-    icon: [
-      { url: '/img/icon.webp' },
-      { url: '/img/icon.webp', sizes: '32x32', type: 'image/webp' },
-      { url: '/img/icon.webp', sizes: '16x16', type: 'image/webp' },
-    ],
-    apple: '/img/icon.webp',
-    shortcut: '/img/icon.webp',
-  },
+  icons: faviconConfig,
 }
 
 export default function RootLayout({
