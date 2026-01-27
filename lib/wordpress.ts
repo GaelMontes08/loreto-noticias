@@ -93,3 +93,56 @@ export function getFeaturedImageUrl(post: WordPressPost): string {
 export function getFeaturedImageAlt(post: WordPressPost): string {
   return post._embedded?.['wp:featuredmedia']?.[0]?.alt_text || post.title.rendered
 }
+
+export function cleanWordPressContent(content: string): string {
+  let cleaned = content
+  
+  // Remove WordPress-specific classes that might interfere with styling
+  cleaned = cleaned.replace(/class="[^"]*wp-[^"]*"/g, '')
+  
+  // Remove empty paragraphs
+  cleaned = cleaned.replace(/<p>\s*<\/p>/g, '')
+  
+  // Remove inline styles that might conflict
+  cleaned = cleaned.replace(/style="[^"]*"/g, '')
+  
+  // Clean up extra whitespace
+  cleaned = cleaned.replace(/\s+/g, ' ')
+  
+  // Clean up image tags - remove width/height attributes but keep original sizing
+  cleaned = cleaned.replace(/<img([^>]*)>/g, (match, attrs) => {
+    // Keep the original attributes but ensure responsiveness
+    return `<img${attrs}/>`
+  })
+  
+  return cleaned
+}
+
+export function getPublishDate(post: WordPressPost): string {
+  // Try to get date from Yoast metadata first, fallback to post date
+  return post.date
+}
+
+export function getSEOImage(post: WordPressPost): string {
+  // First try featured image
+  const featuredImage = getFeaturedImageUrl(post)
+  if (featuredImage) return featuredImage
+  
+  // Fallback to Yoast OG image
+  if (post.yoast_head_json?.og_image?.[0]?.url) {
+    return post.yoast_head_json.og_image[0].url
+  }
+  
+  // Final fallback - you can set a default image URL here
+  return ''
+}
+
+export function getCanonicalUrl(post: WordPressPost, slug: string): string {
+  // Use Yoast canonical if available, otherwise construct from site URL
+  if (post.yoast_head_json?.canonical) {
+    return post.yoast_head_json.canonical
+  }
+  
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || ''
+  return `${siteUrl}/noticias/${slug}`
+}

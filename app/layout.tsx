@@ -3,6 +3,7 @@ import { Archivo } from 'next/font/google'
 import './globals.css'
 import { ClientProviders } from './ClientProviders'
 import Header from '@/components/Header'
+import { defaultMetadata } from '@/lib/metadata'
 
 const archivo = Archivo({ 
   weight: '700',
@@ -11,10 +12,7 @@ const archivo = Archivo({
   display: 'swap',
 })
 
-export const metadata: Metadata = {
-  title: 'Loreto Noticias',
-  description: 'Tu fuente de noticias de Loreto',
-}
+export const metadata: Metadata = defaultMetadata
 
 export default function RootLayout({
   children,
