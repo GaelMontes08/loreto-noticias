@@ -79,12 +79,10 @@ export const defaultMetadata: Metadata = generateSEOMetadata({
   description: SITE_DESCRIPTION,
 })
 
+const SITE_URL_BASE = process.env.NEXT_PUBLIC_SITE_URL || 'https://loretonoticias.com'
+
 export const faviconConfig = {
-  icon: [
-    { url: '/img/icon.webp' },
-    { url: '/img/icon.webp', sizes: '32x32', type: 'image/webp' },
-    { url: '/img/icon.webp', sizes: '16x16', type: 'image/webp' },
-  ],
-  apple: '/img/icon.webp',
-  shortcut: '/img/icon.webp',
+  icon: '/img/icon.png',
+  apple: '/img/icon.png',
+  shortcut: '/img/icon.png',
 }
