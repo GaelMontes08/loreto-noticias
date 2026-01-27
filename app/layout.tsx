@@ -12,7 +12,18 @@ const archivo = Archivo({
   display: 'swap',
 })
 
-export const metadata: Metadata = defaultMetadata
+export const metadata: Metadata = {
+  ...defaultMetadata,
+  icons: {
+    icon: [
+      { url: '/img/icon.webp' },
+      { url: '/img/icon.webp', sizes: '32x32', type: 'image/webp' },
+      { url: '/img/icon.webp', sizes: '16x16', type: 'image/webp' },
+    ],
+    apple: '/img/icon.webp',
+    shortcut: '/img/icon.webp',
+  },
+}
 
 export default function RootLayout({
   children,
