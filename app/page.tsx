@@ -8,7 +8,8 @@ import Link from 'next/link'
 
 export default function Home() {
   const [featuredPosts, setFeaturedPosts] = useState<WordPressPost[]>([])
-  const [regularPosts, setRegularPosts] = useState<WordPressPost[]>([])
+  const [latestPosts, setLatestPosts] = useState<WordPressPost[]>([])
+  const [mundoPosts, setMundoPosts] = useState<WordPressPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -16,11 +17,14 @@ export default function Home() {
       try {
         // Fetch featured posts (category 17)
         const fetchedFeaturedPosts = await getPosts(3, 17)
-        // Fetch regular posts
-        const fetchedRegularPosts = await getPosts(7)
+        // Fetch latest posts (fetch more to account for filtering)
+        const fetchedLatestPosts = await getPosts(10)
+        // Fetch mundo posts (category 10)
+        const fetchedMundoPosts = await getPosts(5, 10)
         
         setFeaturedPosts(fetchedFeaturedPosts)
-        setRegularPosts(fetchedRegularPosts)
+        setLatestPosts(fetchedLatestPosts)
+        setMundoPosts(fetchedMundoPosts)
         setLoading(false)
       } catch (error) {
         console.error('Error loading posts:', error)
@@ -34,9 +38,13 @@ export default function Home() {
   const featuredPost = featuredPosts[0]
   const secondaryFeatured = featuredPosts.slice(1, 3)
   
-  // Filter out featured posts from regular posts to avoid duplicates
+  // Filter out featured posts from latest posts to avoid duplicates and take only 5
   const featuredPostIds = featuredPosts.map(post => post.id)
-  const remainingPosts = regularPosts.filter(post => !featuredPostIds.includes(post.id))
+  const filteredLatestPosts = latestPosts.filter(post => !featuredPostIds.includes(post.id)).slice(0, 5)
+  
+  // Mundo section posts
+  const mainMundoPost = mundoPosts[0]
+  const secondaryMundoPosts = mundoPosts.slice(1, 5)
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -47,7 +55,7 @@ export default function Home() {
             <div className="text-center py-12">
               <p className="text-gray-600 dark:text-gray-400">Cargando noticias...</p>
             </div>
-          ) : featuredPosts.length === 0 && regularPosts.length === 0 ? (
+          ) : featuredPosts.length === 0 && latestPosts.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-600 dark:text-gray-400">No hay noticias disponibles.</p>
             </div>
@@ -55,9 +63,10 @@ export default function Home() {
             <>
               {/* Featured News Section */}
               <div className="mb-8">
-                <h2 className="text-3xl font-archivo font-bold mb-6 text-black dark:text-white">
+                <h2 className="text-3xl font-archivo font-bold mb-3 text-black dark:text-white">
                   Noticias Destacadas
                 </h2>
+                <div className="w-full h-0.5 bg-red-600 mb-6"></div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* Main Featured News - Left Side (2 columns) */}
@@ -123,20 +132,120 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Remaining News Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {remainingPosts.map((post) => (
-                  <NewsCard
-                    key={post.id}
-                    title={post.title.rendered}
-                    excerpt={post.excerpt.rendered}
-                    imageUrl={getFeaturedImageUrl(post)}
-                    imageAlt={getFeaturedImageAlt(post)}
-                    date={post.date}
-                    slug={post.slug}
-                  />
-                ))}
+              {/* Latest News Section */}
+              <div className="mt-12">
+                <h2 className="text-3xl font-archivo font-bold mb-3 text-black dark:text-white">
+                  Últimas Noticias
+                </h2>
+                <div className="w-full h-0.5 bg-red-600 mb-6"></div>
+                
+                <div className="space-y-6">
+                  {filteredLatestPosts.map((post, index) => (
+                    <Link 
+                      key={post.id}
+                      href={`/noticias/${post.slug}`}
+                      className="group flex flex-col md:flex-row gap-4 bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow"
+                    >
+                      {/* Image */}
+                      {getFeaturedImageUrl(post) && (
+                        <div className="relative w-full md:w-64 h-48 md:h-auto flex-shrink-0">
+                          <Image
+                            src={getFeaturedImageUrl(post)}
+                            alt={getFeaturedImageAlt(post)}
+                            fill
+                            className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
+                      
+                      {/* Content */}
+                      <div className="flex-1 p-4 flex flex-col justify-center">
+                        <h3 className="text-xl md:text-2xl font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition mb-2">
+                          {post.title.rendered}
+                        </h3>
+                        <div 
+                          className="text-gray-600 dark:text-gray-400 line-clamp-2"
+                          dangerouslySetInnerHTML={{ __html: post.excerpt.rendered }}
+                        />
+                        <time className="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                          {new Date(post.date).toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                          })}
+                        </time>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
+
+              {/* Mundo Section */}
+              {mainMundoPost && (
+                <div className="mt-12">
+                  <h2 className="text-3xl font-archivo font-bold mb-3 text-black dark:text-white">
+                    Mundo
+                  </h2>
+                  <div className="w-full h-0.5 bg-red-600 mb-6"></div>
+                  
+                  {/* Main Mundo Post */}
+                  <Link 
+                    href={`/noticias/${mainMundoPost.slug}`}
+                    className="block group mb-6 text-center"
+                  >
+                    {/* Title */}
+                    <h3 className="text-2xl md:text-3xl font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition">
+                      {mainMundoPost.title.rendered}
+                    </h3>
+                    {/* Image */}
+                    {getFeaturedImageUrl(mainMundoPost) && (
+                      <div className="relative w-full md:h-[500px] h-[200px] my-4 rounded-lg overflow-hidden">
+                        <Image
+                          src={getFeaturedImageUrl(mainMundoPost)}
+                          alt={getFeaturedImageAlt(mainMundoPost)}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Separator */}
+                    <div className="w-full h-px bg-gray-300 dark:bg-gray-700 mt-4 mb-6"></div>
+                  </Link>
+
+                  {/* Secondary Mundo Posts Grid */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {secondaryMundoPosts.map((post) => (
+                      <Link 
+                        key={post.id}
+                        href={`/noticias/${post.slug}`}
+                        className="group"
+                      >
+                        <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow h-full flex flex-col">
+                          {/* Image */}
+                          {getFeaturedImageUrl(post) && (
+                            <div className="relative w-full h-48">
+                              <Image
+                                src={getFeaturedImageUrl(post)}
+                                alt={getFeaturedImageAlt(post)}
+                                fill
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Content */}
+                          <div className="p-4 flex-1">
+                            <h3 className="text-lg font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition">
+                              {post.title.rendered}
+                            </h3>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
             </>
           )}
         </div>
