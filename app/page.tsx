@@ -10,6 +10,7 @@ export default function Home() {
   const [featuredPosts, setFeaturedPosts] = useState<WordPressPost[]>([])
   const [latestPosts, setLatestPosts] = useState<WordPressPost[]>([])
   const [mundoPosts, setMundoPosts] = useState<WordPressPost[]>([])
+  const [tecnologiaPosts, setTecnologiaPosts] = useState<WordPressPost[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -21,10 +22,13 @@ export default function Home() {
         const fetchedLatestPosts = await getPosts(10)
         // Fetch mundo posts (category 10)
         const fetchedMundoPosts = await getPosts(5, 10)
+        // Fetch tecnologia posts (category 41)
+        const fetchedTecnologiaPosts = await getPosts(4, 41)
         
         setFeaturedPosts(fetchedFeaturedPosts)
         setLatestPosts(fetchedLatestPosts)
         setMundoPosts(fetchedMundoPosts)
+        setTecnologiaPosts(fetchedTecnologiaPosts)
         setLoading(false)
       } catch (error) {
         console.error('Error loading posts:', error)
@@ -216,6 +220,47 @@ export default function Home() {
                   {/* Secondary Mundo Posts Grid */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                     {secondaryMundoPosts.map((post) => (
+                      <Link 
+                        key={post.id}
+                        href={`/noticias/${post.slug}`}
+                        className="group"
+                      >
+                        <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow h-full flex flex-col">
+                          {/* Image */}
+                          {getFeaturedImageUrl(post) && (
+                            <div className="relative w-full h-48">
+                              <Image
+                                src={getFeaturedImageUrl(post)}
+                                alt={getFeaturedImageAlt(post)}
+                                fill
+                                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                              />
+                            </div>
+                          )}
+                          
+                          {/* Content */}
+                          <div className="p-4 flex-1">
+                            <h3 className="text-lg font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition">
+                              {post.title.rendered}
+                            </h3>
+                          </div>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Tecnología Section */}
+              {tecnologiaPosts.length > 0 && (
+                <div className="mt-12">
+                  <h2 className="text-3xl font-archivo font-bold mb-3 text-black dark:text-white">
+                    Tecnología
+                  </h2>
+                  <div className="w-full h-0.5 bg-red-600 mb-6"></div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {tecnologiaPosts.map((post) => (
                       <Link 
                         key={post.id}
                         href={`/noticias/${post.slug}`}
