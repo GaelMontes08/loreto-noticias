@@ -27,6 +27,7 @@ export interface WordPressPost {
   featured_media: number
   yoast_head_json: YoastMeta
   categories: number[]
+  tags: number[]
   slug: string
   _embedded?: {
     'wp:featuredmedia'?: Array<{
@@ -106,6 +107,80 @@ export async function getAllPostsForSitemap(): Promise<WordPressPostSitemap[]> {
     )
     if (!res.ok) return []
     return await res.json() as WordPressPostSitemap[]
+  } catch {
+    return []
+  }
+}
+
+export async function getRelatedPosts(
+  tagIds: number[],
+  categoryIds: number[],
+  excludeId: number,
+  perPage: number = 4
+): Promise<WordPressPost[]> {
+  try {
+    if (!WORDPRESS_API_URL) return []
+
+    const seen = new Set<number>()
+    const results: WordPressPost[] = []
+
+    // Primary: same category (most reliable on a news site)
+    if (categoryIds.length > 0) {
+      const res = await fetch(
+        `${WORDPRESS_API_URL}/posts?categories=${categoryIds[0]}&exclude=${excludeId}&per_page=${perPage}&_embed`,
+        { next: { revalidate: 60 } }
+      ).catch(() => null)
+      if (res?.ok) {
+        const posts = await res.json() as WordPressPost[]
+        for (const post of posts) {
+          if (!seen.has(post.id)) {
+            seen.add(post.id)
+            results.push(post)
+          }
+        }
+      }
+    }
+
+    // Secondary: per-tag OR queries to top up
+    if (results.length < perPage && tagIds.length > 0) {
+      const excludeIds = [excludeId, ...results.map(p => p.id)].join(',')
+      const tagFetches = tagIds.map(id =>
+        fetch(
+          `${WORDPRESS_API_URL}/posts?tags=${id}&exclude=${excludeIds}&per_page=${perPage}&_embed`,
+          { next: { revalidate: 60 } }
+        ).then(r => r.ok ? r.json() as Promise<WordPressPost[]> : []).catch(() => [])
+      )
+      const tagResults = await Promise.all(tagFetches)
+      for (const posts of tagResults) {
+        for (const post of posts) {
+          if (!seen.has(post.id) && results.length < perPage) {
+            seen.add(post.id)
+            results.push(post)
+          }
+        }
+      }
+    }
+
+    // Final fallback: latest posts
+    if (results.length < perPage) {
+      const need = perPage - results.length
+      const excludeIds = [excludeId, ...results.map(p => p.id)].join(',')
+      const res = await fetch(
+        `${WORDPRESS_API_URL}/posts?exclude=${excludeIds}&per_page=${need}&_embed`,
+        { next: { revalidate: 60 } }
+      ).catch(() => null)
+      if (res?.ok) {
+        const more = await res.json() as WordPressPost[]
+        for (const post of more) {
+          if (!seen.has(post.id)) {
+            seen.add(post.id)
+            results.push(post)
+          }
+        }
+      }
+    }
+
+    return results.slice(0, perPage)
   } catch {
     return []
   }

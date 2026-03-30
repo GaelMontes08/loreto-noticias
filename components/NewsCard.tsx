@@ -8,9 +8,10 @@ interface NewsCardProps {
   imageAlt?: string
   date: string
   slug: string
+  showExcerpt?: boolean
 }
 
-export default function NewsCard({ title, excerpt, imageUrl, imageAlt, date, slug }: NewsCardProps) {
+export default function NewsCard({ title, excerpt, imageUrl, imageAlt, date, slug, showExcerpt = true }: NewsCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
     const now = new Date()
@@ -46,9 +47,11 @@ export default function NewsCard({ title, excerpt, imageUrl, imageAlt, date, slu
         <h4 className="font-bold mb-2 text-black dark:text-white transition">
           <Link href={`/noticias/${slug}`}>{title}</Link>
         </h4>
-        <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
-          {cleanExcerpt}
-        </p>
+        {showExcerpt && (
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+            {cleanExcerpt}
+          </p>
+        )}
         <span className="text-xs text-gray-500">{formatDate(date)}</span>
       </div>
     </div>

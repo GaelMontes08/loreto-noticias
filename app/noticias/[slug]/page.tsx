@@ -1,8 +1,9 @@
-import { getPost, getFeaturedImageUrl, getFeaturedImageAlt, cleanWordPressContent, getPublishDate, getSEOImage, getCanonicalUrl } from '@/lib/wordpress'
+import { getPost, getRelatedPosts, getFeaturedImageUrl, getFeaturedImageAlt, cleanWordPressContent, getPublishDate, getSEOImage, getCanonicalUrl } from '@/lib/wordpress'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/components/ShareButtons'
+import NewsCard from '@/components/NewsCard'
 import type { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/metadata'
 
@@ -46,10 +47,13 @@ export default async function ArticlePage({ params }: PageProps) {
     notFound()
   }
 
-  const featuredImageUrl = getFeaturedImageUrl(post)
-  const featuredImageAlt = getFeaturedImageAlt(post)
-  const publishDate = getPublishDate(post)
-  const cleanedContent = cleanWordPressContent(post.content.rendered)
+  const [featuredImageUrl, featuredImageAlt, publishDate, cleanedContent, relatedPosts] = [
+    getFeaturedImageUrl(post),
+    getFeaturedImageAlt(post),
+    getPublishDate(post),
+    cleanWordPressContent(post.content.rendered),
+    await getRelatedPosts(post.tags ?? [], post.categories ?? [], post.id, 3),
+  ]
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -120,6 +124,29 @@ export default async function ArticlePage({ params }: PageProps) {
           </h3>
           <ShareButtons title={post.title.rendered} url={`${process.env.NEXT_PUBLIC_SITE_URL || ''}/noticias/${params.slug}`} />
         </div>
+
+        {/* Related Posts */}
+        {relatedPosts.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <h3 className="text-xl font-archivo font-bold text-black dark:text-white mb-6">
+              Noticias relacionadas
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {relatedPosts.map(related => (
+                <NewsCard
+                  key={related.id}
+                  title={related.title.rendered}
+                  excerpt={related.excerpt.rendered}
+                  imageUrl={getFeaturedImageUrl(related)}
+                  imageAlt={getFeaturedImageAlt(related)}
+                  date={related.date}
+                  slug={related.slug}
+                  showExcerpt={false}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Back to Home */}
         <div className="mt-12">
