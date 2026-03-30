@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Archivo } from 'next/font/google'
 import './globals.css'
 import { ClientProviders } from './ClientProviders'
@@ -12,6 +12,15 @@ const archivo = Archivo({
   variable: '--font-archivo',
   display: 'swap',
 })
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#111827' },
+  ],
+}
 
 export const metadata: Metadata = {
   ...defaultMetadata,
