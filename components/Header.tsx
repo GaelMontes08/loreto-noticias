@@ -9,8 +9,9 @@ const categories = [
   { name: 'Política', href: '/categoria/politica' },
   { name: 'Economía', href: '/categoria/economia' },
   { name: 'Deportes', href: '/categoria/deportes' },
-  { name: 'Cultura', href: '/categoria/cultura' },
-  { name: 'Tecnología', href: '/categoria/tecnologia' },
+  { name: 'Perú', href: '/categoria/peru' },
+  { name: 'Salud', href: '/categoria/salud' },
+  { name: 'Elecciones 2026', href: '/categoria/elecciones-2026' },
 ]
 
 export default function Header() {

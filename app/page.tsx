@@ -1,51 +1,22 @@
-'use client'
-
-import { useState, useEffect } from 'react'
-import { getPosts, getFeaturedImageUrl, getFeaturedImageAlt, type WordPressPost } from '@/lib/wordpress'
-import NewsCard from '@/components/NewsCard'
+import { getPosts, getFeaturedImageUrl, getFeaturedImageAlt } from '@/lib/wordpress'
 import Image from 'next/image'
 import Link from 'next/link'
 
-export default function Home() {
-  const [featuredPosts, setFeaturedPosts] = useState<WordPressPost[]>([])
-  const [latestPosts, setLatestPosts] = useState<WordPressPost[]>([])
-  const [mundoPosts, setMundoPosts] = useState<WordPressPost[]>([])
-  const [tecnologiaPosts, setTecnologiaPosts] = useState<WordPressPost[]>([])
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    async function loadPosts() {
-      try {
-        // Fetch featured posts (category 17)
-        const fetchedFeaturedPosts = await getPosts(3, 17)
-        // Fetch latest posts (fetch more to account for filtering)
-        const fetchedLatestPosts = await getPosts(10)
-        // Fetch mundo posts (category 10)
-        const fetchedMundoPosts = await getPosts(5, 10)
-        // Fetch tecnologia posts (category 41)
-        const fetchedTecnologiaPosts = await getPosts(4, 41)
-        
-        setFeaturedPosts(fetchedFeaturedPosts)
-        setLatestPosts(fetchedLatestPosts)
-        setMundoPosts(fetchedMundoPosts)
-        setTecnologiaPosts(fetchedTecnologiaPosts)
-        setLoading(false)
-      } catch (error) {
-        console.error('Error loading posts:', error)
-        setLoading(false)
-      }
-    }
-
-    loadPosts()
-  }, [])
+export default async function Home() {
+  const [featuredPosts, latestPosts, mundoPosts, tecnologiaPosts] = await Promise.all([
+    getPosts(3, 17),       // Featured category
+    getPosts(10),          // Latest posts
+    getPosts(5, 10),       // Mundo category
+    getPosts(4, 41),       // Tecnología category
+  ])
 
   const featuredPost = featuredPosts[0]
   const secondaryFeatured = featuredPosts.slice(1, 3)
-  
-  // Filter out featured posts from latest posts to avoid duplicates and take only 5
-  const featuredPostIds = featuredPosts.map(post => post.id)
-  const filteredLatestPosts = latestPosts.filter(post => !featuredPostIds.includes(post.id)).slice(0, 5)
-  
+
+  // Filter out featured posts from latest posts to avoid duplicates
+  const featuredPostIds = new Set(featuredPosts.map(post => post.id))
+  const filteredLatestPosts = latestPosts.filter(post => !featuredPostIds.has(post.id)).slice(0, 5)
+
   // Mundo section posts
   const mainMundoPost = mundoPosts[0]
   const secondaryMundoPosts = mundoPosts.slice(1, 5)
@@ -55,11 +26,7 @@ export default function Home() {
       {/* Main Content */}
       <main className="py-8">
         <div className="max-w-6xl mx-auto px-4">
-          {loading ? (
-            <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-gray-400">Cargando noticias...</p>
-            </div>
-          ) : featuredPosts.length === 0 && latestPosts.length === 0 ? (
+          {featuredPosts.length === 0 && latestPosts.length === 0 ? (
             <div className="text-center py-12">
               <p className="text-gray-600 dark:text-gray-400">No hay noticias disponibles.</p>
             </div>
@@ -309,9 +276,9 @@ export default function Home() {
             <div>
               <h4 className="font-bold mb-3">Secciones</h4>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-red-600 transition">Política</a></li>
-                <li><a href="#" className="hover:text-red-600 transition">Deportes</a></li>
-                <li><a href="#" className="hover:text-red-600 transition">Cultura</a></li>
+                <li><Link href="/categoria/politica" className="hover:text-red-600 transition">Política</Link></li>
+                <li><Link href="/categoria/deportes" className="hover:text-red-600 transition">Deportes</Link></li>
+                <li><Link href="/categoria/economia" className="hover:text-red-600 transition">Economía</Link></li>
               </ul>
             </div>
             <div>

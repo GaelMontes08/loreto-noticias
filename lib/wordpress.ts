@@ -36,9 +36,17 @@ export interface WordPressPost {
   }
 }
 
+export interface WordPressTag {
+  id: number
+  name: string
+  slug: string
+  description: string
+  count: number
+}
+
 const WORDPRESS_API_URL = process.env.NEXT_PUBLIC_WORDPRESS_API_URL || ''
 
-export async function getPosts(perPage: number = 10, categoryId?: number): Promise<WordPressPost[]> {
+export async function getPosts(perPage: number = 10, categoryId?: number, tagId?: number): Promise<WordPressPost[]> {
   try {
     if (!WORDPRESS_API_URL) {
       console.error('WordPress API URL is not configured')
@@ -46,7 +54,8 @@ export async function getPosts(perPage: number = 10, categoryId?: number): Promi
     }
 
     const categoryParam = categoryId ? `&categories=${categoryId}` : ''
-    const url = `${WORDPRESS_API_URL}/posts?per_page=${perPage}&_embed${categoryParam}`
+    const tagParam = tagId ? `&tags=${tagId}` : ''
+    const url = `${WORDPRESS_API_URL}/posts?per_page=${perPage}&_embed${categoryParam}${tagParam}`
     console.log('Fetching posts from:', url)
     
     const res = await fetch(url, {
@@ -66,6 +75,21 @@ export async function getPosts(perPage: number = 10, categoryId?: number): Promi
   } catch (error) {
     console.error('Error fetching posts:', error)
     return []
+  }
+}
+
+export async function getTagBySlug(slug: string): Promise<WordPressTag | null> {
+  try {
+    if (!WORDPRESS_API_URL) return null
+    const res = await fetch(`${WORDPRESS_API_URL}/tags?slug=${slug}`, {
+      next: { revalidate: 3600 },
+    })
+    if (!res.ok) return null
+    const data = await res.json() as WordPressTag[]
+    return data[0] || null
+  } catch (error) {
+    console.error('Error fetching tag:', error)
+    return null
   }
 }
 
