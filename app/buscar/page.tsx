@@ -27,23 +27,25 @@ export default async function BuscarPage({ searchParams }: BuscarProps) {
 
         {/* Search form */}
         <form method="GET" action="/buscar" className="mb-10">
-          <div className="flex gap-3">
-            <div className="flex-1 flex items-center gap-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 focus-within:border-red-600 transition-colors shadow-sm">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex-1 flex items-center gap-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl px-4 py-3 focus-within:border-red-600 transition-colors shadow-sm min-w-0">
               <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
               <input
-                type="text"
+                type="search"
                 name="q"
                 defaultValue={q}
                 placeholder="Buscar noticias..."
                 autoFocus
-                className="flex-1 bg-transparent text-black dark:text-white placeholder-gray-400 text-lg outline-none"
+                inputMode="search"
+                enterKeyHint="search"
+                className="flex-1 bg-transparent text-black dark:text-white placeholder-gray-400 text-lg outline-none min-w-0"
               />
             </div>
             <button
               type="submit"
-              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-colors"
+              className="px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-xl transition-colors whitespace-nowrap"
             >
               Buscar
             </button>
@@ -55,8 +57,8 @@ export default async function BuscarPage({ searchParams }: BuscarProps) {
             <div className="mb-8">
               <h1 className="text-2xl font-archivo font-bold text-black dark:text-white mb-3">
                 {posts.length > 0
-                  ? `${posts.length} resultado${posts.length !== 1 ? 's' : ''} para "${q}"`
-                  : `Sin resultados para "${q}"`}
+                  ? <>{posts.length} resultado{posts.length !== 1 ? 's' : ''} para &ldquo;{q}&rdquo;</>
+                  : <>Sin resultados para &ldquo;{q}&rdquo;</>}
               </h1>
               <div className="w-16 h-0.5 bg-red-600" />
             </div>

@@ -1,4 +1,4 @@
-'use client'
+﻿'use client'
 
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
@@ -52,7 +52,7 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     return () => clearTimeout(debounceRef.current)
   }, [query])
 
-  // Keyboard navigation
+  // Keyboard navigation (desktop)
   useEffect(() => {
     if (!isOpen) return
     const handler = (e: KeyboardEvent) => {
@@ -77,22 +77,39 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   if (!isOpen) return null
 
   return (
-    <div
-      className="fixed inset-0 z-[60] bg-black/70 backdrop-blur-sm flex items-start justify-center pt-16 md:pt-24 px-4"
-      onClick={onClose}
-    >
+    <div className="fixed inset-0 z-[60]" onClick={onClose}>
+      {/* Dark backdrop - desktop only */}
+      <div className="hidden md:block absolute inset-0 bg-black/70 backdrop-blur-sm" />
+
+      {/* Modal card - full-screen on mobile, centred card on desktop */}
       <div
-        className="w-full max-w-2xl bg-white dark:bg-gray-900 rounded-xl shadow-2xl overflow-hidden"
+        className="relative flex flex-col w-full h-full bg-white dark:bg-gray-900 md:h-auto md:max-w-2xl md:mx-auto md:mt-24 md:rounded-xl md:shadow-2xl md:overflow-hidden"
         onClick={e => e.stopPropagation()}
       >
-        {/* Input row */}
+        {/* Mobile-only header with back arrow */}
+        <div className="flex md:hidden items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+          <button
+            onClick={onClose}
+            className="p-2 -ml-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            aria-label="Cerrar busqueda"
+          >
+            <svg className="w-5 h-5 text-gray-700 dark:text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <span className="font-medium text-black dark:text-white">Buscar</span>
+        </div>
+
+        {/* Input row - single input shared by mobile and desktop */}
         <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
           <svg className="w-5 h-5 text-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
           <input
             ref={inputRef}
-            type="text"
+            type="search"
+            inputMode="search"
+            enterKeyHint="search"
             value={query}
             onChange={e => setQuery(e.target.value)}
             placeholder="Buscar noticias..."
@@ -102,25 +119,25 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             <button
               onClick={() => setQuery('')}
               className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 transition-colors"
-              aria-label="Limpiar búsqueda"
+              aria-label="Limpiar busqueda"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
           )}
+          {/* Esc close button - desktop only */}
           <button
             onClick={onClose}
-            className="ml-1 px-3 py-1 text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg transition-colors"
+            className="hidden md:block ml-1 px-3 py-1 text-xs text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white border border-gray-300 dark:border-gray-600 rounded-lg transition-colors"
           >
             Esc
           </button>
         </div>
 
-        {/* Results area */}
-        <div className="max-h-[60vh] overflow-y-auto">
+        {/* Results area - fills remaining height on mobile, capped on desktop */}
+        <div className="flex-1 md:flex-none md:max-h-[60vh] overflow-y-auto">
 
-          {/* Loading skeleton */}
           {loading && (
             <div className="space-y-1 p-2">
               {Array.from({ length: 4 }).map((_, i) => (
@@ -135,7 +152,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             </div>
           )}
 
-          {/* No results */}
           {!loading && query.trim() && results.length === 0 && (
             <div className="p-8 text-center text-gray-500 dark:text-gray-400">
               No se encontraron resultados para{' '}
@@ -143,7 +159,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             </div>
           )}
 
-          {/* Results */}
           {!loading && results.length > 0 && (
             <>
               <ul>
@@ -186,8 +201,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                   )
                 })}
               </ul>
-
-              {/* See all results link */}
               <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3">
                 <Link
                   href={`/buscar?q=${encodeURIComponent(query)}`}
@@ -203,7 +216,6 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
             </>
           )}
 
-          {/* Empty prompt */}
           {!query.trim() && !loading && (
             <div className="p-6 text-center text-gray-400 dark:text-gray-500 text-sm">
               Escribe para buscar noticias...
@@ -211,9 +223,9 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
           )}
         </div>
 
-        {/* Keyboard hint */}
-        <div className="px-4 py-2 border-t border-gray-100 dark:border-gray-800 flex items-center gap-4 text-xs text-gray-400">
-          <span><kbd className="font-sans">↑↓</kbd> navegar</span>
+        {/* Keyboard hints - desktop only */}
+        <div className="hidden md:flex px-4 py-2 border-t border-gray-100 dark:border-gray-800 items-center gap-4 text-xs text-gray-400">
+          <span><kbd className="font-sans">&#x2191;&#x2193;</kbd> navegar</span>
           <span><kbd className="font-sans">Enter</kbd> abrir</span>
           <span><kbd className="font-sans">Esc</kbd> cerrar</span>
         </div>
