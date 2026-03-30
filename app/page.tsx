@@ -263,37 +263,6 @@ export default async function Home() {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-black text-white mt-12">
-        <div className="max-w-6xl mx-auto px-4 py-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div>
-              <h3 className="text-xl font-bold mb-3">Loreto Noticias</h3>
-              <p className="text-gray-400">
-                Tu fuente confiable de información local y nacional.
-              </p>
-            </div>
-            <div>
-              <h4 className="font-bold mb-3">Secciones</h4>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/categoria/politica" className="hover:text-red-600 transition">Política</Link></li>
-                <li><Link href="/categoria/deportes" className="hover:text-red-600 transition">Deportes</Link></li>
-                <li><Link href="/categoria/economia" className="hover:text-red-600 transition">Economía</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-bold mb-3">Contacto</h4>
-              <p className="text-gray-400">
-                Email: contacto@loretonoticias.com<br />
-                Tel: (123) 456-7890
-              </p>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-6 pt-6 text-center text-gray-400">
-            <p>&copy; 2026 Loreto Noticias. Todos los derechos reservados.</p>
-          </div>
-        </div>
-      </footer>
     </div>
   )
 }

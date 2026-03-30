@@ -3,6 +3,7 @@ import { Archivo } from 'next/font/google'
 import './globals.css'
 import { ClientProviders } from './ClientProviders'
 import Header from '@/components/Header'
+import Footer from '@/components/Footer'
 import { defaultMetadata, faviconConfig } from '@/lib/metadata'
 
 const archivo = Archivo({ 
@@ -28,6 +29,7 @@ export default function RootLayout({
         <ClientProviders>
           <Header />
           {children}
+          <Footer />
         </ClientProviders>
       </body>
     </html>
