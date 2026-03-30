@@ -10,15 +10,18 @@ interface ShareButtonsProps {
 export default function ShareButtons({ title, url }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false)
   const [hasNativeShare, setHasNativeShare] = useState(false)
+  const [shareUrl, setShareUrl] = useState(url)
 
   useEffect(() => {
+    // Always use the real browser URL so the full domain is included
+    setShareUrl(window.location.href)
     setHasNativeShare(typeof navigator !== 'undefined' && 'share' in navigator)
   }, [])
 
   const handleNativeShare = async () => {
     if (navigator.share) {
       try {
-        await navigator.share({ title, url })
+        await navigator.share({ title, url: shareUrl })
       } catch {
         // user cancelled or not supported — fall through silently
       }
@@ -27,13 +30,13 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
 
   const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(url)
+      await navigator.clipboard.writeText(shareUrl)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     } catch {
       // fallback for older browsers
       const el = document.createElement('input')
-      el.value = url
+      el.value = shareUrl
       document.body.appendChild(el)
       el.select()
       document.execCommand('copy')
@@ -43,10 +46,10 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
     }
   }
 
-  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${title} ${url}`)}`
-  const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`
-  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`
-  const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`
+  const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${title} ${shareUrl}`)}`
+  const xUrl = `https://x.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(shareUrl)}`
+  const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`
+  const telegramUrl = `https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(title)}`
 
   return (
     <div className="flex flex-wrap gap-2">
