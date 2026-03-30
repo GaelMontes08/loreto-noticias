@@ -78,6 +78,25 @@ export async function getPosts(perPage: number = 10, categoryId?: number, tagId?
   }
 }
 
+export interface WordPressPostSitemap {
+  slug: string
+  modified: string
+}
+
+export async function getAllPostsForSitemap(): Promise<WordPressPostSitemap[]> {
+  try {
+    if (!WORDPRESS_API_URL) return []
+    const res = await fetch(
+      `${WORDPRESS_API_URL}/posts?per_page=100&_fields=slug,modified`,
+      { cache: 'no-store' }
+    )
+    if (!res.ok) return []
+    return await res.json() as WordPressPostSitemap[]
+  } catch {
+    return []
+  }
+}
+
 export async function getTagBySlug(slug: string): Promise<WordPressTag | null> {
   try {
     if (!WORDPRESS_API_URL) return null
