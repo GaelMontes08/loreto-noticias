@@ -83,6 +83,20 @@ export interface WordPressPostSitemap {
   modified: string
 }
 
+export async function searchPosts(query: string, perPage: number = 10): Promise<WordPressPost[]> {
+  try {
+    if (!WORDPRESS_API_URL || !query.trim()) return []
+    const res = await fetch(
+      `${WORDPRESS_API_URL}/posts?search=${encodeURIComponent(query)}&_embed&per_page=${perPage}`,
+      { cache: 'no-store' }
+    )
+    if (!res.ok) return []
+    return await res.json() as WordPressPost[]
+  } catch {
+    return []
+  }
+}
+
 export async function getAllPostsForSitemap(): Promise<WordPressPostSitemap[]> {
   try {
     if (!WORDPRESS_API_URL) return []

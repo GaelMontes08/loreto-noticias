@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import ThemeToggle from './ThemeToggle'
+import SearchModal from './SearchModal'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -19,6 +20,7 @@ export default function Header() {
   const [showCategoryNav, setShowCategoryNav] = useState(true)
   const [lastScrollY, setLastScrollY] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [searchOpen, setSearchOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -61,26 +63,17 @@ export default function Header() {
             {/* Right - All Icons */}
             <div className="flex items-center gap-2">
               <button
+                onClick={() => setSearchOpen(true)}
                 className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
                 aria-label="Search"
               >
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                  />
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
               </button>
-              
+
               <ThemeToggle />
-              
+
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
@@ -148,21 +141,12 @@ export default function Header() {
                   </button>
 
                   <button
+                    onClick={() => setSearchOpen(true)}
                     className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
                     aria-label="Search"
                   >
-                    <svg
-                      className="w-6 h-6"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                      />
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
                   </button>
                 </>
@@ -270,6 +254,8 @@ export default function Header() {
       {/* Spacer to prevent content from going under fixed header */}
       <div className="h-[72px] md:h-[76px]"></div>
       <div className={`transition-all duration-300 ${showCategoryNav ? 'h-[52px]' : 'h-0'}`}></div>
+
+      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   )
 }
