@@ -226,6 +226,20 @@ export default function Header() {
                   </Link>
                 </li>
               ))}
+
+              {/* Contact link */}
+              <li className="pt-2 border-t border-gray-200 dark:border-gray-700">
+                <Link
+                  href="/contacto"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center gap-2 px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors"
+                >
+                  <svg className="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                  Contáctanos
+                </Link>
+              </li>
               
               {/* Mobile Auth Buttons */}
               <li className="md:hidden pt-4 border-t border-gray-200 dark:border-gray-700">
