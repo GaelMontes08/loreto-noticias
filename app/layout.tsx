@@ -37,6 +37,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" suppressHydrationWarning>
+      <head>
+        {/* Preconnect — resolve DNS + open TLS before these are needed */}
+        <link rel="preconnect" href="https://dimgrey-gnat-663662.hostingersite.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+      </head>
       <body className={archivo.variable}>
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-4P0LNM09Q5"
