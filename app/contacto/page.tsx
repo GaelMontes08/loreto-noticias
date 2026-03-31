@@ -1,6 +1,7 @@
 import { generateSEOMetadata } from '@/lib/metadata'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import ContactForm from '@/components/ContactForm'
 
 export const metadata: Metadata = generateSEOMetadata({
   title: 'Contacto',
@@ -31,52 +32,20 @@ export default function ContactPage() {
             Nos encantaría escucharte.
           </p>
 
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 my-8">
+          {/* Contact Form */}
+          <div className="mt-10">
             <h2 className="text-2xl font-archivo font-bold text-black dark:text-white mb-6">
-              Información de Contacto
+              Envíanos un mensaje
             </h2>
-            
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-bold text-black dark:text-white mb-2">Email</h3>
-                <a 
-                  href="mailto:contacto@loretonoticias.com" 
-                  className="text-red-600 hover:underline"
-                >
-                  contacto@loretonoticias.com
-                </a>
-              </div>
-
-              <div>
-                <h3 className="font-bold text-black dark:text-white mb-2">Redes Sociales</h3>
-                <div className="flex gap-4">
-                  <a 
-                    href="https://facebook.com/loretonoticias" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-blue-600 hover:underline"
-                  >
-                    Facebook
-                  </a>
-                  <a 
-                    href="https://twitter.com/loretonoticias" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="text-black hover:underline"
-                  >
-                    X (Twitter)
-                  </a>
-                </div>
-              </div>
-            </div>
+            <ContactForm />
           </div>
 
-          <div className="mt-8">
+          <div className="mt-10 pt-8 border-t border-gray-200 dark:border-gray-700">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"
+              className="inline-flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-500 transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
               Volver al inicio

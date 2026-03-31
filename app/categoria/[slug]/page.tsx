@@ -1,13 +1,19 @@
 import { generateSEOMetadata } from '@/lib/metadata'
-import { getTagBySlug, getPosts, getFeaturedImageUrl, getFeaturedImageAlt } from '@/lib/wordpress'
+import { getTagBySlug, getPostsPaginated, getFeaturedImageUrl, getFeaturedImageAlt } from '@/lib/wordpress'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
+import Pagination from '@/components/Pagination'
+
+const PER_PAGE = 12
 
 interface CategoryPageProps {
   params: {
     slug: string
+  }
+  searchParams: {
+    page?: string
   }
 }
 
@@ -43,14 +49,15 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   })
 }
 
-export default async function CategoryPage({ params }: CategoryPageProps) {
+export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
   const tag = await getTagBySlug(params.slug)
 
   if (!tag) {
     notFound()
   }
 
-  const posts = await getPosts(12, undefined, tag.id)
+  const currentPage = Math.max(1, parseInt(searchParams.page ?? '1', 10))
+  const { posts, totalPages } = await getPostsPaginated(PER_PAGE, currentPage, undefined, tag.id)
 
   const rawDescription = tag.description
     ? tag.description.replace(/<[^>]*>/g, '').trim()
@@ -94,7 +101,8 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {posts.map((post) => {
               const imageUrl = getFeaturedImageUrl(post)
               const imageAlt = getFeaturedImageAlt(post)
@@ -142,6 +150,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
               )
             })}
           </div>
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            baseHref={`/categoria/${params.slug}`}
+          />
+          </>
         )}
       </div>
     </div>

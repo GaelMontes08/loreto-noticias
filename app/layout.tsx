@@ -5,6 +5,7 @@ import './globals.css'
 import { ClientProviders } from './ClientProviders'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import BreakingNewsTicker from '@/components/BreakingNewsTicker'
 import { defaultMetadata, faviconConfig } from '@/lib/metadata'
 
 const archivo = Archivo({ 
@@ -50,6 +51,7 @@ export default function RootLayout({
         </Script>
         <ClientProviders>
           <Header />
+          <BreakingNewsTicker />
           {children}
           <Footer />
         </ClientProviders>

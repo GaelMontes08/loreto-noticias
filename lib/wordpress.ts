@@ -84,6 +84,36 @@ export interface WordPressPostSitemap {
   modified: string
 }
 
+export interface PaginatedResult {
+  posts: WordPressPost[]
+  total: number
+  totalPages: number
+}
+
+export async function getPostsPaginated(
+  perPage: number,
+  page: number = 1,
+  categoryId?: number,
+  tagId?: number
+): Promise<PaginatedResult> {
+  try {
+    if (!WORDPRESS_API_URL) return { posts: [], total: 0, totalPages: 0 }
+    const categoryParam = categoryId ? `&categories=${categoryId}` : ''
+    const tagParam = tagId ? `&tags=${tagId}` : ''
+    const res = await fetch(
+      `${WORDPRESS_API_URL}/posts?per_page=${perPage}&page=${page}&_embed${categoryParam}${tagParam}`,
+      { next: { revalidate: 60 } }
+    )
+    if (!res.ok) return { posts: [], total: 0, totalPages: 0 }
+    const posts = await res.json() as WordPressPost[]
+    const total = parseInt(res.headers.get('X-WP-Total') ?? '0', 10)
+    const totalPages = parseInt(res.headers.get('X-WP-TotalPages') ?? '1', 10)
+    return { posts, total, totalPages }
+  } catch {
+    return { posts: [], total: 0, totalPages: 0 }
+  }
+}
+
 export async function searchPosts(query: string, perPage: number = 10): Promise<WordPressPost[]> {
   try {
     if (!WORDPRESS_API_URL || !query.trim()) return []
@@ -95,6 +125,27 @@ export async function searchPosts(query: string, perPage: number = 10): Promise<
     return await res.json() as WordPressPost[]
   } catch {
     return []
+  }
+}
+
+export async function searchPostsPaginated(
+  query: string,
+  perPage: number = 10,
+  page: number = 1
+): Promise<PaginatedResult> {
+  try {
+    if (!WORDPRESS_API_URL || !query.trim()) return { posts: [], total: 0, totalPages: 0 }
+    const res = await fetch(
+      `${WORDPRESS_API_URL}/posts?search=${encodeURIComponent(query)}&_embed&per_page=${perPage}&page=${page}`,
+      { cache: 'no-store' }
+    )
+    if (!res.ok) return { posts: [], total: 0, totalPages: 0 }
+    const posts = await res.json() as WordPressPost[]
+    const total = parseInt(res.headers.get('X-WP-Total') ?? '0', 10)
+    const totalPages = parseInt(res.headers.get('X-WP-TotalPages') ?? '1', 10)
+    return { posts, total, totalPages }
+  } catch {
+    return { posts: [], total: 0, totalPages: 0 }
   }
 }
 

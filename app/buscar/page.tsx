@@ -1,11 +1,14 @@
-import { searchPosts, getFeaturedImageUrl, getFeaturedImageAlt } from '@/lib/wordpress'
+import { searchPostsPaginated, getFeaturedImageUrl, getFeaturedImageAlt } from '@/lib/wordpress'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/metadata'
+import Pagination from '@/components/Pagination'
+
+const PER_PAGE = 12
 
 interface BuscarProps {
-  searchParams: { q?: string }
+  searchParams: { q?: string; page?: string }
 }
 
 export async function generateMetadata({ searchParams }: BuscarProps): Promise<Metadata> {
@@ -19,7 +22,10 @@ export async function generateMetadata({ searchParams }: BuscarProps): Promise<M
 
 export default async function BuscarPage({ searchParams }: BuscarProps) {
   const q = searchParams.q?.trim() || ''
-  const posts = q ? await searchPosts(q, 20) : []
+  const currentPage = Math.max(1, parseInt(searchParams.page ?? '1', 10))
+  const { posts, total, totalPages } = q
+    ? await searchPostsPaginated(q, PER_PAGE, currentPage)
+    : { posts: [], total: 0, totalPages: 0 }
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -57,7 +63,7 @@ export default async function BuscarPage({ searchParams }: BuscarProps) {
             <div className="mb-8">
               <h1 className="text-2xl font-archivo font-bold text-black dark:text-white mb-3">
                 {posts.length > 0
-                  ? <>{posts.length} resultado{posts.length !== 1 ? 's' : ''} para &ldquo;{q}&rdquo;</>
+                  ? <>{total} resultado{total !== 1 ? 's' : ''} para &ldquo;{q}&rdquo;</>
                   : <>Sin resultados para &ldquo;{q}&rdquo;</>}
               </h1>
               <div className="w-16 h-0.5 bg-red-600" />
@@ -121,6 +127,11 @@ export default async function BuscarPage({ searchParams }: BuscarProps) {
                 })}
               </div>
             )}
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              baseHref={`/buscar?q=${encodeURIComponent(q)}`}
+            />
           </>
         )}
 

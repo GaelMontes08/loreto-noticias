@@ -39,3 +39,24 @@ h1, h2, h3, h4, h5, h6 {
     display: none;
   }
 }
+
+@keyframes ticker {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.ticker-track {
+  display: inline-flex;
+  white-space: nowrap;
+  animation: ticker var(--ticker-duration, 90s) linear infinite;
+}
+
+@media (min-width: 768px) {
+  .ticker-track {
+    --ticker-duration: 75s;
+  }
+}
+
+.ticker-track:hover {
+  animation-play-state: paused;
+}
