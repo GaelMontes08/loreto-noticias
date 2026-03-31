@@ -28,6 +28,9 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   ...defaultMetadata,
   icons: faviconConfig,
+  other: {
+    'google-adsense-account': 'ca-pub-1777939455626900',
+  },
 }
 
 export default function RootLayout({
@@ -42,6 +45,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://dimgrey-gnat-663662.hostingersite.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+        <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
       </head>
       <body className={archivo.variable}>
         <Script
@@ -56,6 +60,11 @@ export default function RootLayout({
             gtag('config', 'G-4P0LNM09Q5');
           `}
         </Script>
+        <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1777939455626900"
+          strategy="lazyOnload"
+          crossOrigin="anonymous"
+        />
         <ClientProviders>
           <Header />
           <BreakingNewsTicker />
@@ -63,6 +72,25 @@ export default function RootLayout({
           <Footer />
           <BackToTop />
         </ClientProviders>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Loreto Noticias',
+              url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://loretonoticias.com',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://loretonoticias.com'}/buscar?q={search_term_string}`,
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            }),
+          }}
+        />
       </body>
     </html>
   )
