@@ -24,6 +24,7 @@ export interface WordPressPost {
     rendered: string
   }
   date: string
+  modified: string
   featured_media: number
   yoast_head_json: YoastMeta
   categories: number[]
