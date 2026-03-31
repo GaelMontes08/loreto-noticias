@@ -26,7 +26,7 @@ export default function ContactPage() {
           Contáctanos
         </h1>
 
-        <div className="prose prose-lg dark:prose-invert max-w-none">
+        <div className="prose dark:prose-invert max-w-none">
           <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
             ¿Tienes una noticia que compartir? ¿Sugerencias para mejorar nuestro servicio? 
             Nos encantaría escucharte.
