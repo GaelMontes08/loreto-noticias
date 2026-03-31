@@ -6,6 +6,7 @@ import { ClientProviders } from './ClientProviders'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import BreakingNewsTicker from '@/components/BreakingNewsTicker'
+import BackToTop from '@/components/BackToTop'
 import { defaultMetadata, faviconConfig } from '@/lib/metadata'
 
 const archivo = Archivo({ 
@@ -54,6 +55,7 @@ export default function RootLayout({
           <BreakingNewsTicker />
           {children}
           <Footer />
+          <BackToTop />
         </ClientProviders>
       </body>
     </html>
