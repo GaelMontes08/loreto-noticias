@@ -8,6 +8,8 @@ export default function ArticleLoading() {
           <div className="h-4 w-10 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
           <div className="h-4 w-2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
           <div className="h-4 w-20 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+          <div className="h-4 w-2 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
+          <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" />
         </div>
 
         {/* Title */}

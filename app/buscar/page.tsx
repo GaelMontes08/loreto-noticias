@@ -4,6 +4,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/metadata'
 import Pagination from '@/components/Pagination'
+import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
 
 const PER_PAGE = 12
 
@@ -101,6 +102,8 @@ export default async function BuscarPage({ searchParams }: BuscarProps) {
                               fill
                               className="object-cover transition-transform duration-300 hover:scale-105"
                               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                              placeholder="blur"
+                              blurDataURL={BLUR_PLACEHOLDER}
                             />
                           </div>
                         </Link>

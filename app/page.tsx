@@ -1,6 +1,7 @@
 import { getPosts, getFeaturedImageUrl, getFeaturedImageAlt } from '@/lib/wordpress'
 import Image from 'next/image'
 import Link from 'next/link'
+import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
 
 export default async function Home() {
   const [featuredPosts, latestPosts, mundoPosts, tecnologiaPosts] = await Promise.all([
@@ -51,6 +52,8 @@ export default async function Home() {
                             fill
                             className="object-cover transition-transform duration-300 group-hover:scale-105"
                             priority
+                            placeholder="blur"
+                            blurDataURL={BLUR_PLACEHOLDER}
                           />
                           {/* Dark overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
@@ -93,6 +96,8 @@ export default async function Home() {
                                 alt={getFeaturedImageAlt(post)}
                                 fill
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                placeholder="blur"
+                                blurDataURL={BLUR_PLACEHOLDER}
                               />
                             </div>
                           )}
@@ -125,6 +130,8 @@ export default async function Home() {
                             alt={getFeaturedImageAlt(post)}
                             fill
                             className="object-cover transition-transform duration-300 group-hover:scale-105"
+                            placeholder="blur"
+                            blurDataURL={BLUR_PLACEHOLDER}
                           />
                         </div>
                       )}
@@ -176,6 +183,8 @@ export default async function Home() {
                           alt={getFeaturedImageAlt(mainMundoPost)}
                           fill
                           className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          placeholder="blur"
+                          blurDataURL={BLUR_PLACEHOLDER}
                         />
                       </div>
                     )}
@@ -201,6 +210,8 @@ export default async function Home() {
                                 alt={getFeaturedImageAlt(post)}
                                 fill
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                placeholder="blur"
+                                blurDataURL={BLUR_PLACEHOLDER}
                               />
                             </div>
                           )}
@@ -242,6 +253,8 @@ export default async function Home() {
                                 alt={getFeaturedImageAlt(post)}
                                 fill
                                 className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                placeholder="blur"
+                                blurDataURL={BLUR_PLACEHOLDER}
                               />
                             </div>
                           )}

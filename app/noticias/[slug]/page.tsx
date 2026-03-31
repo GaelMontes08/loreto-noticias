@@ -6,6 +6,7 @@ import ShareButtons from '@/components/ShareButtons'
 import NewsCard from '@/components/NewsCard'
 import type { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/metadata'
+import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
 
 interface PageProps {
   params: {
@@ -55,7 +56,42 @@ export default async function ArticlePage({ params }: PageProps) {
     await getRelatedPosts(post.tags ?? [], post.categories ?? [], post.id, 3),
   ]
 
+  const canonicalUrl = getCanonicalUrl(post, params.slug)
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: post.title.rendered,
+    datePublished: post.date,
+    dateModified: post.modified ?? post.date,
+    url: canonicalUrl,
+    image: featuredImageUrl ? [featuredImageUrl] : undefined,
+    author: {
+      '@type': 'Organization',
+      name: 'Loreto Noticias',
+      url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://loretonoticias.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Loreto Noticias',
+      url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://loretonoticias.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: `${process.env.NEXT_PUBLIC_SITE_URL ?? 'https://loretonoticias.com'}/img/logo.webp`,
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalUrl,
+    },
+  }
+
   return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
       <article className="max-w-4xl mx-auto px-4 py-8">
         {/* Breadcrumb */}
@@ -65,6 +101,14 @@ export default async function ArticlePage({ params }: PageProps) {
           </Link>
           <span className="mx-2">/</span>
           <span className="text-gray-900 dark:text-gray-200">Noticia</span>
+          <span className="mx-2">/</span>
+          <time dateTime={publishDate}>
+            {new Date(publishDate).toLocaleDateString('es-ES', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+            })}
+          </time>
         </nav>
 
         {/* Article Title */}
@@ -94,6 +138,8 @@ export default async function ArticlePage({ params }: PageProps) {
               fill
               className="object-cover"
               priority
+              placeholder="blur"
+              blurDataURL={BLUR_PLACEHOLDER}
             />
           </div>
         )}
@@ -162,5 +208,6 @@ export default async function ArticlePage({ params }: PageProps) {
         </div>
       </article>
     </div>
+    </>
   )
 }

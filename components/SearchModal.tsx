@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
 import Link from 'next/link'
 import { searchPosts, getFeaturedImageUrl, type WordPressPost } from '@/lib/wordpress'
 
@@ -185,6 +186,8 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
                               fill
                               className="object-cover"
                               sizes="64px"
+                              placeholder="blur"
+                              blurDataURL={BLUR_PLACEHOLDER}
                             />
                           </div>
                         )}

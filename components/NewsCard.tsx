@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
+import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
 
 interface NewsCardProps {
   title: string
@@ -39,6 +40,8 @@ export default function NewsCard({ title, excerpt, imageUrl, imageAlt, date, slu
               fill
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              placeholder="blur"
+              blurDataURL={BLUR_PLACEHOLDER}
             />
           </div>
         </Link>
