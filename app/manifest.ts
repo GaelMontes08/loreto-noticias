@@ -30,7 +30,7 @@ export default function manifest(): MetadataRoute.Manifest {
       {
         src: '/img/fallback.webp',
         type: 'image/webp',
-        form_factor: 'wide',
+        sizes: '1200x630',
       },
     ],
   }
