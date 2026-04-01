@@ -93,6 +93,20 @@ export default function TerminosPage() {
               policies.google.com/technologies/ads
             </a>.
           </p>
+          <p>
+            Adicionalmente, podemos mostrar <strong>publicidad directa de empresas y negocios
+            locales de Loreto y la Amazonía peruana</strong>. Estos anuncios son banners
+            estáticos claramente etiquetados como «Publicidad» y no implican el uso de cookies
+            de seguimiento por parte de Loreto Noticias. Al hacer clic en dichos anuncios serás
+            redirigido al sitio del anunciante, cuyas propias políticas de privacidad aplican
+            a partir de ese momento.
+          </p>
+          <p>
+            La aceptación o rechazo de publicidad puede gestionarse a través del aviso de
+            cookies que aparece al visitar el sitio por primera vez. La publicidad directa de
+            empresas locales no requiere cookies y se muestra independientemente de tu
+            preferencia de cookies.
+          </p>
 
           <h2>5. Limitación de responsabilidad</h2>
           <p>

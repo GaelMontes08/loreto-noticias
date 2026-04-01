@@ -138,7 +138,7 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
-          <p>&copy; 2020 Loreto Noticias. Todos los derechos reservados.</p>
+          <p>&copy; 2020&ndash;{year} Loreto Noticias. Todos los derechos reservados.</p>
           <div className="flex items-center gap-4">
             {legalLinks.map((link) => (
               <Link

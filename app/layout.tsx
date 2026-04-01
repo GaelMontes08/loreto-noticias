@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from 'next'
 import { Archivo } from 'next/font/google'
-import Script from 'next/script'
 import './globals.css'
 import { ClientProviders } from './ClientProviders'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import BreakingNewsTicker from '@/components/BreakingNewsTicker'
 import BackToTop from '@/components/BackToTop'
+import CookieBanner from '@/components/CookieBanner'
 import { defaultMetadata, faviconConfig } from '@/lib/metadata'
 
 const archivo = Archivo({ 
@@ -48,29 +48,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
       </head>
       <body className={archivo.variable}>
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-4P0LNM09Q5"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-4P0LNM09Q5');
-          `}
-        </Script>
-        <Script
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1777939455626900"
-          strategy="lazyOnload"
-          crossOrigin="anonymous"
-        />
         <ClientProviders>
           <Header />
           <BreakingNewsTicker />
           {children}
           <Footer />
           <BackToTop />
+          <CookieBanner />
         </ClientProviders>
         <script
           type="application/ld+json"

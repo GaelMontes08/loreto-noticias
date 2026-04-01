@@ -93,6 +93,8 @@ export default function PrivacidadPage() {
           <h2>4. Google AdSense y cookies de publicidad</h2>
           <p>
             Loreto Noticias muestra anuncios a través de <strong>Google AdSense</strong>.
+            Estos anuncios <strong>solo se cargan si aceptas todas las cookies</strong> a
+            través del aviso de consentimiento que aparece al visitar el sitio por primera vez.
             Google y sus socios pueden usar cookies para mostrar anuncios basados en tus
             visitas previas a este y otros sitios web. Puedes desactivar la publicidad
             personalizada visitando{' '}
@@ -123,23 +125,51 @@ export default function PrivacidadPage() {
             </a>.
           </p>
 
-          <h2>5. Cookies</h2>
+          <h2>5. Publicidad directa de empresas locales</h2>
+          <p>
+            Además de Google AdSense, Loreto Noticias puede publicar anuncios contratados
+            directamente con <strong>empresas y negocios locales de Loreto y la Amazonía
+            peruana</strong>. Estos anuncios son banners estáticos (imágenes con enlace)
+            claramente etiquetados con la leyenda «Publicidad».
+          </p>
+          <p>
+            <strong>Loreto Noticias no instala cookies de seguimiento</strong> asociadas a
+            estos anuncios directos. Sin embargo, al hacer clic en un banner serás redirigido
+            al sitio web del anunciante, el cual puede tener sus propias prácticas de
+            privacidad y cookies independientes de las nuestras. Te recomendamos revisar la
+            política de privacidad de cada empresa antes de proporcionar datos personales en
+            sus sitios.
+          </p>
+          <p>
+            La publicidad de empresas locales se muestra a todos los visitantes,
+            independientemente de las preferencias de cookies expresadas en nuestro aviso de
+            consentimiento, ya que no requiere cookies para funcionar.
+          </p>
+
+          <h2>6. Cookies y consentimiento</h2>
           <p>
             Las cookies son pequeños archivos de texto almacenados en tu dispositivo. Las
             usamos para:
           </p>
           <ul>
-            <li>Recordar tu preferencia de tema (claro/oscuro).</li>
-            <li>Medir el tráfico mediante Google Analytics.</li>
-            <li>Mostrar publicidad relevante a través de Google AdSense.</li>
+            <li>Recordar tu preferencia de tema (claro/oscuro) — siempre activa.</li>
+            <li>Medir el tráfico mediante Google Analytics — solo con tu consentimiento.</li>
+            <li>Mostrar publicidad personalizada a través de Google AdSense — solo con tu consentimiento.</li>
           </ul>
           <p>
-            Puedes configurar tu navegador para rechazar todas las cookies o para que te
-            avise cuando se envíe una. Sin embargo, algunas funcionalidades del sitio pueden
+            Al visitar el sitio por primera vez, aparecerá un aviso en la parte inferior de
+            la pantalla donde podrás elegir entre <strong>«Aceptar todo»</strong> (activa
+            Analytics y AdSense) o <strong>«Solo necesarias»</strong> (solo se usa la cookie
+            de preferencia de tema). Puedes cambiar tu decisión limpiando el almacenamiento
+            local de tu navegador.
+          </p>
+          <p>
+            Puedes también configurar tu navegador para rechazar todas las cookies o para que
+            te avise cuando se envíe una. Sin embargo, algunas funcionalidades del sitio pueden
             no estar disponibles sin cookies.
           </p>
 
-          <h2>6. Derechos del usuario</h2>
+          <h2>7. Derechos del usuario</h2>
           <p>
             De acuerdo con la <strong>Ley N.° 29733</strong> (Ley de Protección de Datos
             Personales del Perú) y su reglamento, tienes derecho a:
@@ -155,7 +185,7 @@ export default function PrivacidadPage() {
             <a href="mailto:contacto@loretonoticias.com">contacto@loretonoticias.com</a>.
           </p>
 
-          <h2>7. Seguridad</h2>
+          <h2>8. Seguridad</h2>
           <p>
             Adoptamos medidas técnicas y organizativas razonables para proteger la información
             recopilada frente a accesos no autorizados, pérdida o alteración. No obstante,
@@ -163,14 +193,14 @@ export default function PrivacidadPage() {
             podemos garantizar la seguridad absoluta.
           </p>
 
-          <h2>8. Menores de edad</h2>
+          <h2>9. Menores de edad</h2>
           <p>
             Loreto Noticias no está dirigido a menores de 13 años y no recopilamos
             intencionalmente información personal de niños. Si crees que un menor nos ha
             proporcionado datos personales, contáctanos para que podamos eliminarlos.
           </p>
 
-          <h2>9. Cambios en esta política</h2>
+          <h2>10. Cambios en esta política</h2>
           <p>
             Podemos actualizar esta Política de Privacidad periódicamente. Te notificaremos
             los cambios significativos actualizando la fecha en la parte superior de esta
@@ -178,7 +208,7 @@ export default function PrivacidadPage() {
             aceptación de la política revisada.
           </p>
 
-          <h2>10. Contacto</h2>
+          <h2>11. Contacto</h2>
           <p>
             Si tienes preguntas o inquietudes sobre esta Política de Privacidad, puedes
             comunicarte con nosotros:

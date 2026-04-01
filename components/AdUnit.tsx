@@ -25,14 +25,21 @@ export default function AdUnit({
   const pushed = useRef(false)
 
   useEffect(() => {
-    if (pushed.current) return
-    try {
-      window.adsbygoogle = window.adsbygoogle || []
-      window.adsbygoogle.push({})
-      pushed.current = true
-    } catch {
-      // AdSense not loaded yet (e.g. ad blocker) — fail silently
+    const tryPush = () => {
+      if (pushed.current) return
+      if (localStorage.getItem('loreto-cookie-consent') !== 'all') return
+      try {
+        window.adsbygoogle = window.adsbygoogle || []
+        window.adsbygoogle.push({})
+        pushed.current = true
+      } catch {
+        // AdSense script not yet loaded (e.g. ad blocker) — fail silently
+      }
     }
+
+    tryPush()
+    window.addEventListener('loreto-consent-accepted', tryPush)
+    return () => window.removeEventListener('loreto-consent-accepted', tryPush)
   }, [])
 
   return (
