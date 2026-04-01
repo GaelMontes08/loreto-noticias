@@ -12,6 +12,8 @@ const navLinks = [
 
 const legalLinks = [
   { name: 'Contacto', href: '/contacto' },
+  { name: 'Términos y Condiciones', href: '/terminos' },
+  { name: 'Política de Privacidad', href: '/privacidad' },
 ]
 
 export default function Footer() {
@@ -135,8 +137,19 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-center gap-3 text-gray-500 text-sm">
+        <div className="border-t border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-gray-500 text-sm">
           <p>&copy; 2020 Loreto Noticias. Todos los derechos reservados.</p>
+          <div className="flex items-center gap-4">
+            {legalLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="hover:text-red-500 transition-colors"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </footer>
