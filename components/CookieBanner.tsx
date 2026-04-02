@@ -15,6 +15,15 @@ export function getStoredConsent(): ConsentValue | null {
   return localStorage.getItem(CONSENT_KEY) as ConsentValue | null
 }
 
+function loadAdSense() {
+  if (document.querySelector(`script[src*="adsbygoogle"]`)) return
+  const script = document.createElement('script')
+  script.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`
+  script.async = true
+  script.crossOrigin = 'anonymous'
+  document.head.appendChild(script)
+}
+
 export default function CookieBanner() {
   const [consent, setConsent] = useState<ConsentValue | null>(null)
   const [visible, setVisible] = useState(false)
@@ -24,6 +33,7 @@ export default function CookieBanner() {
     const stored = localStorage.getItem(CONSENT_KEY) as ConsentValue | null
     if (stored) {
       setConsent(stored)
+      if (stored === 'all') loadAdSense()
     } else {
       setVisible(true)
       // Double rAF so the element is painted before the transition fires
@@ -36,6 +46,7 @@ export default function CookieBanner() {
     setConsent('all')
     setShow(false)
     setTimeout(() => setVisible(false), 300)
+    loadAdSense()
     window.dispatchEvent(new Event('loreto-consent-accepted'))
   }
 
@@ -48,7 +59,7 @@ export default function CookieBanner() {
 
   return (
     <>
-      {/* Only load tracking scripts after explicit consent */}
+      {/* Only load GA after explicit consent — AdSense injected manually via loadAdSense() */}
       {consent === 'all' && (
         <>
           <Script
@@ -58,11 +69,6 @@ export default function CookieBanner() {
           <Script id="ga-init" strategy="afterInteractive">
             {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA_ID}');`}
           </Script>
-          <Script
-            src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_ID}`}
-            strategy="lazyOnload"
-            crossOrigin="anonymous"
-          />
         </>
       )}
 
