@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/components/ShareButtons'
 import NewsCard from '@/components/NewsCard'
-import AdUnit from '@/components/AdUnit'
 import type { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/metadata'
 import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
@@ -164,9 +163,6 @@ export default async function ArticlePage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: cleanedContent }}
         />
 
-        {/* Ad — below article content */}
-        <AdUnit slot="1234567890" format="auto" className="mt-10" />
-
         {/* Share Section */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-archivo font-bold text-black dark:text-white mb-4">
@@ -197,9 +193,6 @@ export default async function ArticlePage({ params }: PageProps) {
             </div>
           </div>
         )}
-
-        {/* Ad — below related posts */}
-        <AdUnit slot="0987654321" format="horizontal" className="mt-10" />
 
         {/* Back to Home */}
         <div className="mt-12">
