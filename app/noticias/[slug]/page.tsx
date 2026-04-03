@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import ShareButtons from '@/components/ShareButtons'
 import NewsCard from '@/components/NewsCard'
+import ReadingProgress from '@/components/ReadingProgress'
 import type { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/metadata'
 import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
@@ -56,6 +57,11 @@ export default async function ArticlePage({ params }: PageProps) {
     await getRelatedPosts(post.tags ?? [], post.categories ?? [], post.id, 3),
   ]
 
+  // Reading time — strip tags from cleaned HTML, count words, assume 200 wpm
+  const plainText = cleanedContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
+  const wordCount = plainText.split(' ').filter(Boolean).length
+  const readingMinutes = Math.max(1, Math.round(wordCount / 200))
+
   const canonicalUrl = getCanonicalUrl(post, params.slug)
 
   const jsonLd = {
@@ -88,6 +94,7 @@ export default async function ArticlePage({ params }: PageProps) {
 
   return (
     <>
+      <ReadingProgress />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
@@ -127,6 +134,13 @@ export default async function ArticlePage({ params }: PageProps) {
               minute: '2-digit'
             })}
           </time>
+          <span className="text-gray-300 dark:text-gray-600">·</span>
+          <span className="text-sm flex items-center gap-1.5">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            {readingMinutes} min de lectura
+          </span>
         </div>
 
         {/* Featured Image */}
