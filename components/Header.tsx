@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import ThemeToggle from './ThemeToggle'
 import SearchModal from './SearchModal'
+import NewsletterModal from './NewsletterModal'
 import Link from 'next/link'
 import Image from 'next/image'
 
@@ -21,6 +22,7 @@ export default function Header() {
   const [lastScrollY, setLastScrollY] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
+  const [newsletterOpen, setNewsletterOpen] = useState(false)
 
   useEffect(() => {
     const handleScroll = () => {
@@ -168,21 +170,18 @@ export default function Header() {
               </span>
             </Link>
 
-            {/* Right Side - Theme, Sign Up, Sign In */}
+            {/* Right Side - Theme, Subscribe */}
             <div className="flex items-center justify-end gap-2">
               <ThemeToggle />
-              <Link
-                href="/registrarse"
-                className="hidden md:flex px-4 py-2 text-sm font-medium hover:bg-gray-800 rounded-lg transition-colors whitespace-nowrap"
+              <button
+                onClick={() => setNewsletterOpen(true)}
+                className="hidden md:flex items-center gap-1.5 px-4 py-2 text-sm font-medium bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors whitespace-nowrap"
               >
-                Registrarse
-              </Link>
-              <Link
-                href="/iniciar-sesion"
-                className="hidden md:flex px-4 py-2 text-sm font-medium bg-white text-black hover:bg-gray-200 rounded-lg transition-colors whitespace-nowrap"
-              >
-                Iniciar Sesión
-              </Link>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
+                Suscribirse
+              </button>
             </div>
           </div>
         </div>
@@ -253,24 +252,17 @@ export default function Header() {
                 </Link>
               </li>
               
-              {/* Mobile Auth Buttons */}
+              {/* Mobile Newsletter Button */}
               <li className="md:hidden pt-4 border-t border-gray-200 dark:border-gray-700">
-                <Link
-                  href="/registrarse"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 transition-colors font-medium"
+                <button
+                  onClick={() => { setMobileMenuOpen(false); setNewsletterOpen(true) }}
+                  className="w-full flex items-center gap-2 px-4 py-3 rounded-lg bg-red-600 hover:bg-red-700 text-white transition-colors font-medium"
                 >
-                  Registrarse
-                </Link>
-              </li>
-              <li className="md:hidden">
-                <Link
-                  href="/iniciar-sesion"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block px-4 py-3 rounded-lg bg-black dark:bg-white text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors font-medium"
-                >
-                  Iniciar Sesión
-                </Link>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                  Suscribirse al newsletter
+                </button>
               </li>
             </ul>
           </div>
@@ -282,6 +274,7 @@ export default function Header() {
       <div className={`transition-all duration-300 ${showCategoryNav ? 'h-[52px]' : 'h-0'}`}></div>
 
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+      <NewsletterModal isOpen={newsletterOpen} onClose={() => setNewsletterOpen(false)} />
     </>
   )
 }
