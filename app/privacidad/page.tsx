@@ -182,7 +182,7 @@ export default function PrivacidadPage() {
           </ul>
           <p>
             Para ejercer cualquiera de estos derechos, escríbenos a{' '}
-            <a href="mailto:contacto@loretonoticias.com">contacto@loretonoticias.com</a>.
+            <a href="mailto:grupoloretonoticias@gmail.com">grupoloretonoticias@gmail.com</a>.
           </p>
 
           <h2>8. Seguridad</h2>
@@ -216,7 +216,7 @@ export default function PrivacidadPage() {
           <ul>
             <li>
               Correo electrónico:{' '}
-              <a href="mailto:contacto@loretonoticias.com">contacto@loretonoticias.com</a>
+              <a href="mailto:grupoloretonoticias@gmail.com">grupoloretonoticias@gmail.com</a>
             </li>
             <li>
               Formulario web: <Link href="/contacto">loretonoticias.com/contacto</Link>

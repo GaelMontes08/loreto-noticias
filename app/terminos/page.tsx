@@ -138,7 +138,7 @@ export default function TerminosPage() {
           <h2>8. Contacto</h2>
           <p>
             Si tienes preguntas sobre estos Términos y Condiciones, puedes escribirnos a{' '}
-            <a href="mailto:contacto@loretonoticias.com">contacto@loretonoticias.com</a> o
+            <a href="mailto:grupoloretonoticias@gmail.com">grupoloretonoticias@gmail.com</a> o
             usar nuestro{' '}
             <Link href="/contacto">formulario de contacto</Link>.
           </p>

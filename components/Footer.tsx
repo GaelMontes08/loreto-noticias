@@ -11,6 +11,7 @@ const navLinks = [
 ]
 
 const legalLinks = [
+  { name: 'Sobre Nosotros', href: '/nosotros' },
   { name: 'Contacto', href: '/contacto' },
   { name: 'Términos y Condiciones', href: '/terminos' },
   { name: 'Política de Privacidad', href: '/privacidad' },
