@@ -42,6 +42,8 @@ export function generateSEOMetadata({
       images: [
         {
           url: ogImage,
+          width: 1200,
+          height: 630,
           alt: title,
         },
       ],
@@ -52,7 +54,7 @@ export function generateSEOMetadata({
       card: 'summary_large_image',
       title: fullTitle,
       description,
-      images: [ogImage],
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
     },
   }
 

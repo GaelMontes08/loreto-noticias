@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import FooterNewsletter from './FooterNewsletter'
 
 const navLinks = [
   { name: 'Política', href: '/categoria/politica' },
@@ -135,6 +136,21 @@ export default function Footer() {
             </ul>
           </div>
 
+        </div>
+
+        {/* Newsletter strip */}
+        <div className="border-t border-gray-800 mt-10 pt-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="flex-shrink-0">
+            <p className="text-white font-archivo font-bold text-sm mb-1">
+              Suscríbete al newsletter
+            </p>
+            <p className="text-gray-400 text-xs">
+              Las noticias más importantes directo en tu correo. Sin spam.
+            </p>
+          </div>
+          <div className="w-full md:max-w-sm">
+            <FooterNewsletter />
+          </div>
         </div>
 
         {/* Bottom bar */}
