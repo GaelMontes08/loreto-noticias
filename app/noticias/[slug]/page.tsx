@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import ShareButtons from '@/components/ShareButtons'
 import NewsCard from '@/components/NewsCard'
 import ReadingProgress from '@/components/ReadingProgress'
+import LocalAdBanner from '@/components/LocalAdBanner'
 import type { Metadata } from 'next'
 import { generateSEOMetadata } from '@/lib/metadata'
 import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
@@ -56,6 +57,20 @@ export default async function ArticlePage({ params }: PageProps) {
     cleanWordPressContent(post.content.rendered),
     await getRelatedPosts(post.tags ?? [], post.categories ?? [], post.id, 3),
   ]
+
+  // Split HTML after the Nth </p> to inject an ad mid-article
+  function splitAfterParagraph(html: string, after: number): [string, string] | null {
+    let count = 0
+    let idx = 0
+    while (count < after) {
+      const next = html.indexOf('</p>', idx)
+      if (next === -1) return null
+      idx = next + 4
+      count++
+    }
+    return [html.slice(0, idx), html.slice(idx)]
+  }
+  const contentParts = splitAfterParagraph(cleanedContent, 3)
 
   // Reading time — strip tags from cleaned HTML, count words, assume 200 wpm
   const plainText = cleanedContent.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim()
@@ -159,23 +174,63 @@ export default async function ArticlePage({ params }: PageProps) {
         )}
 
         {/* Article Content */}
-        <div 
-          className="prose dark:prose-invert max-w-none
-            prose-headings:font-archivo prose-headings:font-bold
-            prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4
-            prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
-            prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
-            prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline
-            prose-strong:text-black dark:prose-strong:text-white prose-strong:font-bold
-            prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-8 prose-img:mx-auto prose-img:max-w-full prose-img:h-auto
-            prose-blockquote:border-l-4 prose-blockquote:border-red-600 prose-blockquote:pl-6 prose-blockquote:italic
-            prose-ul:list-disc prose-ul:ml-6
-            prose-ol:list-decimal prose-ol:ml-6
-            [&_figure]:my-8 [&_figure]:mx-auto [&_figure]:text-center
-            [&_figure>img]:rounded-2xl [&_figure>img]:shadow-xl [&_figure>img]:inline-block
-            [&_figcaption]:text-sm [&_figcaption]:text-gray-600 dark:[&_figcaption]:text-gray-400 [&_figcaption]:mt-3 [&_figcaption]:text-center [&_figcaption]:italic"
-          dangerouslySetInnerHTML={{ __html: cleanedContent }}
-        />
+        {contentParts ? (
+          <>
+            <div
+              className="prose dark:prose-invert max-w-none
+                prose-headings:font-archivo prose-headings:font-bold
+                prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4
+                prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
+                prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
+                prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline
+                prose-strong:text-black dark:prose-strong:text-white prose-strong:font-bold
+                prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-8 prose-img:mx-auto prose-img:max-w-full prose-img:h-auto
+                prose-blockquote:border-l-4 prose-blockquote:border-red-600 prose-blockquote:pl-6 prose-blockquote:italic
+                prose-ul:list-disc prose-ul:ml-6
+                prose-ol:list-decimal prose-ol:ml-6
+                [&_figure]:my-8 [&_figure]:mx-auto [&_figure]:text-center
+                [&_figure>img]:rounded-2xl [&_figure>img]:shadow-xl [&_figure>img]:inline-block
+                [&_figcaption]:text-sm [&_figcaption]:text-gray-600 dark:[&_figcaption]:text-gray-400 [&_figcaption]:mt-3 [&_figcaption]:text-center [&_figcaption]:italic"
+              dangerouslySetInnerHTML={{ __html: contentParts[0] }}
+            />
+            <LocalAdBanner className="my-8" />
+            <div
+              className="prose dark:prose-invert max-w-none
+                prose-headings:font-archivo prose-headings:font-bold
+                prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4
+                prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
+                prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
+                prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline
+                prose-strong:text-black dark:prose-strong:text-white prose-strong:font-bold
+                prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-8 prose-img:mx-auto prose-img:max-w-full prose-img:h-auto
+                prose-blockquote:border-l-4 prose-blockquote:border-red-600 prose-blockquote:pl-6 prose-blockquote:italic
+                prose-ul:list-disc prose-ul:ml-6
+                prose-ol:list-decimal prose-ol:ml-6
+                [&_figure]:my-8 [&_figure]:mx-auto [&_figure]:text-center
+                [&_figure>img]:rounded-2xl [&_figure>img]:shadow-xl [&_figure>img]:inline-block
+                [&_figcaption]:text-sm [&_figcaption]:text-gray-600 dark:[&_figcaption]:text-gray-400 [&_figcaption]:mt-3 [&_figcaption]:text-center [&_figcaption]:italic"
+              dangerouslySetInnerHTML={{ __html: contentParts[1] }}
+            />
+          </>
+        ) : (
+          <div
+            className="prose dark:prose-invert max-w-none
+              prose-headings:font-archivo prose-headings:font-bold
+              prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-4
+              prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-3
+              prose-p:text-gray-700 dark:prose-p:text-gray-300 prose-p:leading-relaxed prose-p:mb-6
+              prose-a:text-red-600 prose-a:no-underline hover:prose-a:underline
+              prose-strong:text-black dark:prose-strong:text-white prose-strong:font-bold
+              prose-img:rounded-2xl prose-img:shadow-xl prose-img:my-8 prose-img:mx-auto prose-img:max-w-full prose-img:h-auto
+              prose-blockquote:border-l-4 prose-blockquote:border-red-600 prose-blockquote:pl-6 prose-blockquote:italic
+              prose-ul:list-disc prose-ul:ml-6
+              prose-ol:list-decimal prose-ol:ml-6
+              [&_figure]:my-8 [&_figure]:mx-auto [&_figure]:text-center
+              [&_figure>img]:rounded-2xl [&_figure>img]:shadow-xl [&_figure>img]:inline-block
+              [&_figcaption]:text-sm [&_figcaption]:text-gray-600 dark:[&_figcaption]:text-gray-400 [&_figcaption]:mt-3 [&_figcaption]:text-center [&_figcaption]:italic"
+            dangerouslySetInnerHTML={{ __html: cleanedContent }}
+          />
+        )}
 
         {/* Share Section */}
         <div className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
@@ -208,8 +263,7 @@ export default async function ArticlePage({ params }: PageProps) {
           </div>
         )}
 
-        {/* Back to Home */}
-        <div className="mt-12">
+        <div className="mt-8">
           <Link
             href="/"
             className="inline-flex items-center gap-2 px-6 py-3 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors"

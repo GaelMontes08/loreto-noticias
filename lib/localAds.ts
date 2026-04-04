@@ -18,16 +18,24 @@ export interface LocalAd {
  * Local enterprise ads.
  *
  * HOW TO ADD AN AD:
- *  1. Place the banner image (preferably 1200×300 px, JPEG/WebP) in /public/img/ads/
- *  2. Uncomment and fill in one of the entries below.
- *  3. Multiple entries are picked at random on each page load.
+ *  1. Place the banner image (preferably 1200×300 px, JPEG/WebP) in /public/img/
+ *  2. Add an entry to the array below.
+ *  3. Update `href` with the real destination URL.
+ *  4. Multiple entries are picked at random on each page load.
  */
 export const localAds: LocalAd[] = [
-  // {
-  //   id: 1,
-  //   image: '/img/ads/nombre-empresa.jpg',
-  //   href: 'https://www.empresa.com',
-  //   alt: 'Descripción breve del anuncio – Nombre Empresa',
-  //   label: 'Nombre Empresa',
-  // },
+  {
+    id: 1,
+    image: '/img/casa-del-jaguar-hotel-ad.webp',
+    href: 'https://www.booking.com/hotel/pe/casa-del-jaguar-iquitos.es.html',
+    alt: 'Casa del Jaguar Hotel — Iquitos, Loreto',
+    label: 'Casa del Jaguar Hotel',
+  },
+  {
+    id: 2,
+    image: '/img/casa-del-jaguar-ayahuasca-ad.webp',
+    href: 'https://www.casadeljaguariquitos.com',
+    alt: 'Casa del Jaguar Ayahuasca — Iquitos, Loreto',
+    label: 'Casa del Jaguar Ayahuasca',
+  },
 ]

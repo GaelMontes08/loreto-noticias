@@ -2,6 +2,7 @@ import { getPosts, getFeaturedImageUrl, getFeaturedImageAlt } from '@/lib/wordpr
 import Image from 'next/image'
 import Link from 'next/link'
 import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
+import LocalAdBanner from '@/components/LocalAdBanner'
 
 export default async function Home() {
   const [featuredPosts, latestPosts, mundoPosts, tecnologiaPosts] = await Promise.all([
@@ -107,6 +108,9 @@ export default async function Home() {
                   </div>
                 </div>
               </div>
+
+              {/* Local Ad — between Destacadas and Últimas Noticias */}
+              <LocalAdBanner index={0} className="mt-10" />
 
               {/* Latest News Section */}
               <div className="mt-12">
@@ -228,6 +232,9 @@ export default async function Home() {
                   </div>
                 </div>
               )}
+
+              {/* Local Ad — between Mundo and Tecnología */}
+              <LocalAdBanner index={1} className="mt-10" />
 
               {/* Tecnología Section */}
               {tecnologiaPosts.length > 0 && (

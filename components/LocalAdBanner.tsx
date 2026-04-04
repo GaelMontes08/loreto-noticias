@@ -6,15 +6,21 @@ import { localAds, type LocalAd } from '@/lib/localAds'
 
 interface Props {
   className?: string
+  /** Pin a specific ad by array index. Omit for random pick on each load. */
+  index?: number
 }
 
-export default function LocalAdBanner({ className = '' }: Props) {
+export default function LocalAdBanner({ className = '', index }: Props) {
   const [ad, setAd] = useState<LocalAd | null>(null)
 
   useEffect(() => {
     if (localAds.length === 0) return
-    setAd(localAds[Math.floor(Math.random() * localAds.length)])
-  }, [])
+    if (index !== undefined) {
+      setAd(localAds[index % localAds.length])
+    } else {
+      setAd(localAds[Math.floor(Math.random() * localAds.length)])
+    }
+  }, [index])
 
   // Development-only placeholder so you can see where ads will appear
   if (process.env.NODE_ENV === 'development' && localAds.length === 0) {
