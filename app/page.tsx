@@ -5,11 +5,12 @@ import { BLUR_PLACEHOLDER } from '@/lib/placeholder'
 import LocalAdBanner from '@/components/LocalAdBanner'
 
 export default async function Home() {
-  const [featuredPosts, latestPosts, mundoPosts, tecnologiaPosts] = await Promise.all([
+  const [featuredPosts, latestPosts, mundoPosts, tecnologiaPosts, deportesPosts] = await Promise.all([
     getPosts(3, 17),       // Featured category
     getPosts(10),          // Latest posts
     getPosts(5, 10),       // Mundo category
     getPosts(4, 41),       // Tecnología category
+    getPosts(4, 108),      // Deportes category
   ])
 
   const featuredPost = featuredPosts[0]
@@ -22,6 +23,10 @@ export default async function Home() {
   // Mundo section posts
   const mainMundoPost = mundoPosts[0]
   const secondaryMundoPosts = mundoPosts.slice(1, 5)
+
+  // Deportes section posts
+  const mainDeportesPost = deportesPosts[0]
+  const secondaryDeportesPosts = deportesPosts.slice(1, 5)
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -276,6 +281,72 @@ export default async function Home() {
                       </Link>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* Deportes Section */}
+              {mainDeportesPost && (
+                <div className="mt-12">
+                  <h2 className="text-3xl font-archivo font-bold mb-3 text-black dark:text-white">
+                    Deportes
+                  </h2>
+                  <div className="w-full h-0.5 bg-red-600 mb-6"></div>
+
+                  {/* Main Deportes Post */}
+                  <Link
+                    href={`/noticias/${mainDeportesPost.slug}`}
+                    className="block group mb-6 text-center"
+                  >
+                    <h3 className="text-2xl md:text-3xl font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition">
+                      {mainDeportesPost.title.rendered}
+                    </h3>
+                    {getFeaturedImageUrl(mainDeportesPost) && (
+                      <div className="relative w-full md:h-[500px] h-[200px] my-4 rounded-lg overflow-hidden">
+                        <Image
+                          src={getFeaturedImageUrl(mainDeportesPost)}
+                          alt={getFeaturedImageAlt(mainDeportesPost)}
+                          fill
+                          className="object-cover transition-transform duration-300 group-hover:scale-105"
+                          placeholder="blur"
+                          blurDataURL={BLUR_PLACEHOLDER}
+                        />
+                      </div>
+                    )}
+                    <div className="w-full h-px bg-gray-300 dark:bg-gray-700 mt-4 mb-6"></div>
+                  </Link>
+
+                  {/* Secondary Deportes Posts Grid */}
+                  {secondaryDeportesPosts.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {secondaryDeportesPosts.map((post) => (
+                        <Link
+                          key={post.id}
+                          href={`/noticias/${post.slug}`}
+                          className="group"
+                        >
+                          <div className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow h-full flex flex-col">
+                            {getFeaturedImageUrl(post) && (
+                              <div className="relative w-full h-48">
+                                <Image
+                                  src={getFeaturedImageUrl(post)}
+                                  alt={getFeaturedImageAlt(post)}
+                                  fill
+                                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                                  placeholder="blur"
+                                  blurDataURL={BLUR_PLACEHOLDER}
+                                />
+                              </div>
+                            )}
+                            <div className="p-4 flex-1">
+                              <h3 className="text-lg font-archivo font-bold text-black dark:text-white group-hover:text-red-600 transition">
+                                {post.title.rendered}
+                              </h3>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </>
