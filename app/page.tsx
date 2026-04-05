@@ -186,7 +186,7 @@ export default async function Home() {
                     </h3>
                     {/* Image */}
                     {getFeaturedImageUrl(mainMundoPost) && (
-                      <div className="relative w-full md:h-[500px] h-[200px] my-4 rounded-lg overflow-hidden">
+                      <div className="relative w-full md:h-[675px] h-[200px] my-4 rounded-lg overflow-hidden">
                         <Image
                           src={getFeaturedImageUrl(mainMundoPost)}
                           alt={getFeaturedImageAlt(mainMundoPost)}
@@ -301,7 +301,7 @@ export default async function Home() {
                       {mainDeportesPost.title.rendered}
                     </h3>
                     {getFeaturedImageUrl(mainDeportesPost) && (
-                      <div className="relative w-full md:h-[500px] h-[200px] my-4 rounded-lg overflow-hidden">
+                      <div className="relative w-full md:h-[675px] h-[200px] my-4 rounded-lg overflow-hidden">
                         <Image
                           src={getFeaturedImageUrl(mainDeportesPost)}
                           alt={getFeaturedImageAlt(mainDeportesPost)}
