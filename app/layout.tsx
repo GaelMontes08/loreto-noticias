@@ -42,7 +42,7 @@ export default function RootLayout({
     <html lang="es" suppressHydrationWarning>
       <head>
         {/* Preconnect — resolve DNS + open TLS before these are needed */}
-        <link rel="preconnect" href="https://dimgrey-gnat-663662.hostingersite.com" />
+        <link rel="preconnect" href="https://loretonoticias.iquitostech.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />

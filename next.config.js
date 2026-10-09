@@ -33,7 +33,7 @@ const securityHeaders = [
       // images: self + data URIs + all HTTPS (WordPress media can be any host)
       "img-src 'self' data: blob: https:",
       // fetch/XHR: self + WP API + Resend
-      "connect-src 'self' https://dimgrey-gnat-663662.hostingersite.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net",
+      "connect-src 'self' https://loretonoticias.iquitostech.com https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net",
       // iframes: Google AdSense
       "frame-src https://googleads.g.doubleclick.net https://tpc.googlesyndication.com",
       // workers
