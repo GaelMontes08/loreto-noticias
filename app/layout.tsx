@@ -46,6 +46,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
         <link rel="dns-prefetch" href="https://pagead2.googlesyndication.com" />
+        <link
+  rel="alternate"
+  type="application/rss+xml"
+  title="Loreto Noticias RSS"
+  href="https://loretonoticias.com/rss.xml"
+/>
       </head>
       <body className={archivo.variable}>
         <ClientProviders>
